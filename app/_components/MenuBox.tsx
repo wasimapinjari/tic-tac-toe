@@ -23,6 +23,7 @@ export default function MenuBox() {
     // if (state.isSoundOn) music.play();
     // if (!state.isSoundOn) music.paused;
   }
+  console.log(state);
   return (
     <>
       {/* {state.isSoundOn ? (
