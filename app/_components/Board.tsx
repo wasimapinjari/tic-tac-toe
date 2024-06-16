@@ -206,7 +206,8 @@ export default function Board() {
         setWinningCombo([a, b, c]);
         const newScore = { ...state.score };
         const winningPlayer = newCells[a];
-        newScore[winningPlayer] = newScore[winningPlayer] + 1;
+        if (winningPlayer)
+          newScore[winningPlayer] = newScore[winningPlayer] + 1;
         setScore(newScore);
         return (winner = true);
       }
