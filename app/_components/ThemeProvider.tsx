@@ -10,15 +10,15 @@ export default function ThemeProvider({ children }: Children) {
   const { dispatch } = useGameDispatch();
   useEffect(() => {
     let payload: Theme | null = null;
-    if (!state.theme) {
-      payload = localStorage.getItem('theme') as Theme;
-      dispatch({ type: 'setTheme', payload });
-    }
     const userDarkPreferance = window.matchMedia(
       '(prefers-color-scheme: dark)'
     ).matches;
-    const themeChoice = userDarkPreferance ? 'dark' : 'light';
-    const setTheme = payload || state.theme || themeChoice;
+    payload = userDarkPreferance ? 'dark' : 'light';
+    if (!state.theme) {
+      payload = (localStorage.getItem('theme') as Theme) || payload;
+      dispatch({ type: 'setTheme', payload });
+    }
+    const setTheme = state.theme || payload;
     localStorage.setItem('theme', setTheme);
     if (setTheme === 'light') {
       document.documentElement.style.setProperty('--scroll-thumb', '#bbb');
