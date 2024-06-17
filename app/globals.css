@@ -77,12 +77,11 @@ main,
 }
 
 body::-webkit-scrollbar {
-  height: 7px;
-  width: 7px;
+  height: 8px;
+  width: 8px;
 }
 
 body::-webkit-scrollbar-thumb {
-  height: 10px;
   border-radius: 10px;
   background-color: var(--scroll-thumb);
 }
