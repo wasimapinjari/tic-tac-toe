@@ -3,7 +3,7 @@
 import { useGameDispatch } from '@/hooks/useGameDispatch';
 import { useGameState } from '@/hooks/useGameState';
 import { CellFunction } from '@/types/gameTypes';
-import { MouseEvent, useEffect, useRef } from 'react';
+import { MouseEvent, useRef } from 'react';
 
 export default function Cell({
   index,
