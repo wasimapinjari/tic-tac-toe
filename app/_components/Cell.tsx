@@ -3,19 +3,21 @@
 import { useGameDispatch } from '@/hooks/useGameDispatch';
 import { useGameState } from '@/hooks/useGameState';
 import { CellFunction } from '@/types/gameTypes';
-import { MouseEvent, useRef } from 'react';
+import { MouseEvent, useEffect, useRef } from 'react';
 
 export default function Cell({
   index,
   cellContent,
   setCellsContent,
 }: CellFunction) {
+  const cell = useRef(null);
   const state = useGameState();
   const { setPlayer, setWinningCombo, setLoading } = useGameDispatch();
-  const cell = useRef(null);
   function handleClick(e: MouseEvent<HTMLButtonElement>) {
+    if (state.winner) return;
     if (state.cells[index]) return;
     if (state.isLoading) return;
+    console.log(index);
     setLoading(true);
     if (!state.winner) setWinningCombo([-1, -1, -1]);
     if (cellContent || state.winner) return;
@@ -26,10 +28,10 @@ export default function Cell({
     setPlayer('X');
     setCellsContent('O');
   }
-  const color = state.isLoading ? 'red' : 'inherit';
+  // const color = state.isLoading ? 'red' : 'inherit';
   return (
     <button
-      style={{ backgroundColor: color }}
+      // style={{ backgroundColor: color }}
       data-tile={index}
       disabled={state.isLoading}
       onClick={handleClick}

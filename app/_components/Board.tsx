@@ -191,9 +191,10 @@ export default function Board() {
     const cells = winnerAlgorithm(newCells);
     if (typeof cells === 'object') {
       if (state.isComputer || state.chaosMode) {
-        nextComputerMove(cells);
+        return nextComputerMove(cells);
       }
     }
+    return setLoading(false);
   }
 
   function winnerAlgorithm(newCells: Cells) {
