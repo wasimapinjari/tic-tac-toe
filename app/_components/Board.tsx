@@ -153,12 +153,16 @@ export default function Board() {
           setTimeout(() => {
             setCells(newComputerCells);
             if (state.chaosMode) return;
-            setLoading(false);
+            setTimeout(() => {
+              setLoading(false);
+            }, 300);
           }, 300);
         }
         setTimeout(() => {
           setCells(newComputerCells);
-          setLoading(false);
+          setTimeout(() => {
+            setLoading(false);
+          }, 300);
         }, 600);
       }
       if (state.chaosMode) {
