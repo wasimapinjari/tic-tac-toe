@@ -218,6 +218,7 @@ export default function Board() {
     }
     return winner ? false : newCells;
   }
+
   const isCellsEmpty = isArrayEmpty(state.cells);
   const isCellsFilled = isArrayFilled(state.cells);
   return (
