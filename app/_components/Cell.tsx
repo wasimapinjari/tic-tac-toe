@@ -13,9 +13,9 @@ export default function Cell({
   const state = useGameState();
   const { setPlayer, setWinningCombo, setLoading } = useGameDispatch();
   function handleClick(e: MouseEvent<HTMLButtonElement>) {
+    setLoading(true);
     if (!state.winner) setWinningCombo([-1, -1, -1]);
     if (cellContent || state.winner) return;
-    setLoading(true);
     if (state.currentPlayer === 'X') {
       setPlayer('O');
       return setCellsContent('X');
