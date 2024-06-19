@@ -43,7 +43,7 @@
   color: #222;
   --color: #222;
   --color-hover: green;
-  --bg-color: white;
+  --bg-color: #f8f9fa;
   --bg-color-hover: #eee;
   --bg-active: rgba(144, 238, 144, 0.75);
   --bg-active-hover: rgba(144, 238, 144, 0.5);
@@ -331,7 +331,7 @@ button {
   z-index: 9999;
   isolation: isolate;
   pointer-events: none;
-  background: black;
+  background: #222;
 }
 
 .texture-background {
