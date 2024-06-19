@@ -39,8 +39,10 @@ export default function ThemeProvider({ children }: Children) {
   }, [state.theme, dispatch]);
 
   return (
-    <div className='theme' data-theme={state.theme}>
-      {children}
-    </div>
+    <>
+      <div className='theme' data-theme={state.theme}>
+        {children}
+      </div>
+    </>
   );
 }
