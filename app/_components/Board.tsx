@@ -27,11 +27,11 @@ export default function Board() {
   const state = useGameState();
   const {
     setPlayer,
+    setLoading,
     setCells,
     setWinner,
     setWinningCombo,
     setScore,
-    setLoading,
   } = useGameDispatch();
 
   useEffect(() => {
@@ -153,16 +153,10 @@ export default function Board() {
           setTimeout(() => {
             setCells(newComputerCells);
             if (state.chaosMode) return;
-            setTimeout(() => {
-              setLoading(false);
-            }, 300);
           }, 300);
         }
         setTimeout(() => {
           setCells(newComputerCells);
-          setTimeout(() => {
-            setLoading(false);
-          }, 300);
         }, 600);
       }
       if (state.chaosMode) {
@@ -194,7 +188,6 @@ export default function Board() {
         return nextComputerMove(cells);
       }
     }
-    return setLoading(false);
   }
 
   function winnerAlgorithm(newCells: Cells) {

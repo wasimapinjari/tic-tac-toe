@@ -5,6 +5,9 @@ import { useGameState } from '@/hooks/useGameState';
 import Image from 'next/image';
 import SoundOff from './SoundOff';
 import SoundOn from './SoundOn';
+import useDebounce from '@/hooks/useDebounce';
+import { useEffect, useRef, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 
 export default function MenuBox() {
   const {
@@ -23,7 +26,6 @@ export default function MenuBox() {
     // if (state.isSoundOn) music.play();
     // if (!state.isSoundOn) music.paused;
   }
-  // console.log(state);
   return (
     <>
       {/* {state.isSoundOn ? (
