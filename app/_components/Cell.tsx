@@ -26,12 +26,20 @@ export default function Cell({
   function handleClick() {
     if (state.isLoading) return;
     setLoading(true);
-    if (!state.isComputer) {
+    if (!state.isComputer && !state.chaosMode) {
+      setTimeout(() => {
+        setLoading(false);
+      }, 100);
+    }
+    if (
+      (!state.isComputer && state.chaosMode) ||
+      (state.isComputer && !state.chaosMode)
+    ) {
       setTimeout(() => {
         setLoading(false);
       }, 600);
     }
-    if (state.chaosMode && state.isComputer) {
+    if (state.isComputer && state.chaosMode) {
       setTimeout(() => {
         setLoading(false);
       }, 900);
