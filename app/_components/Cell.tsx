@@ -26,9 +26,16 @@ export default function Cell({
   function handleClick() {
     if (state.isLoading) return;
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-    }, 900);
+    if (!state.isComputer) {
+      setTimeout(() => {
+        setLoading(false);
+      }, 600);
+    }
+    if (state.chaosMode && state.isComputer) {
+      setTimeout(() => {
+        setLoading(false);
+      }, 900);
+    }
     handleClickAfterWait();
   }
   return (
