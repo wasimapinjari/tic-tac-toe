@@ -28,7 +28,7 @@ export default function Cell({
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-    }, 600);
+    }, 900);
     handleClickAfterWait();
   }
   return (
