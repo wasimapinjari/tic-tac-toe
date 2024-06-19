@@ -331,7 +331,7 @@ button {
   z-index: 9999;
   isolation: isolate;
   pointer-events: none;
-  background: green;
+  background: black;
 }
 
 .texture-background {
