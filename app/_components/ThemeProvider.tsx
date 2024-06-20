@@ -40,7 +40,7 @@ export default function ThemeProvider({ children }: Children) {
       );
       document
         .querySelector('[name="theme-color"]')
-        ?.setAttribute('content', 'black');
+        ?.setAttribute('content', '#222');
     }
   }, [state.theme, dispatch]);
 
