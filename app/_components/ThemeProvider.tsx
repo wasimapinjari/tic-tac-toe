@@ -27,6 +27,9 @@ export default function ThemeProvider({ children }: Children) {
         '--text-shadow',
         '0 0 0.1rem #2229'
       );
+      document
+        .querySelector('[name="theme-color"]')
+        ?.setAttribute('content', 'white');
     }
     if (setTheme === 'dark') {
       document.documentElement.style.setProperty('--scroll-thumb', '#555');
@@ -35,6 +38,9 @@ export default function ThemeProvider({ children }: Children) {
         '--text-shadow',
         '0 0 0.12rem white'
       );
+      document
+        .querySelector('[name="theme-color"]')
+        ?.setAttribute('content', 'black');
     }
   }, [state.theme, dispatch]);
 

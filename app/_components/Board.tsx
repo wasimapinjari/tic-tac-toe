@@ -240,9 +240,13 @@ export default function Board() {
       </div>
       <div className='score'>
         <p>
-          X -&gt; {state.score.X} &nbsp;| &nbsp;O -&gt; {state.score.O}
+          X -&gt; <span className='score-value'>{state.score.X}</span>
+          &nbsp;| &nbsp;O -&gt;{' '}
+          <span className='score-value'>{state.score.O}</span>
         </p>
-        <button onClick={() => setScore(initialScore)}>Reset</button>
+        <button disabled onClick={() => setScore(initialScore)}>
+          Reset
+        </button>
       </div>
       <p
         style={{
@@ -252,10 +256,11 @@ export default function Board() {
               : 'hidden',
           marginBottom: '2rem',
         }}
+        className='game-status'
       >
         {isCellsEmpty && 'Make your first move!'}
         {!!state.winner && `Winner is ${state.winner}`}
-        {isCellsFilled && !state.winner && 'Draw :P'}
+        {isCellsFilled && !state.winner && '- Draw -'}
         &nbsp;
       </p>
     </div>

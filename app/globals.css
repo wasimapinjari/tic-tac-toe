@@ -150,6 +150,10 @@ button {
   text-shadow: 0 0 1rem lightgreen;
 }
 
+.group > *:active span {
+  text-shadow: 0 0 1rem crimson;
+}
+
 .group > *:hover span:active {
   text-shadow: 0 0 1rem crimson;
 }
@@ -166,6 +170,20 @@ button {
   display: flex;
   gap: 0.5rem;
   background: var(--bg-color-hover);
+}
+
+.game-status {
+  animation: score-animate infinite alternate-reverse 1.5s ease-out;
+}
+
+@keyframes score-animate {
+  from {
+    color: var(--bg-color);
+    text-shadow: 0 0 0.5rem var(--color);
+  }
+  to {
+    transform: scale(1.02);
+  }
 }
 
 .group-game {
@@ -331,19 +349,7 @@ button {
   z-index: 9999;
   isolation: isolate;
   pointer-events: none;
-  background: #222;
-}
-
-.texture-background {
-  background: -o-linear-gradient(315deg, #ffb534, #f3f8ff, #c1f2b0);
-  background: linear-gradient(135deg, #ffb534, #f3f8ff, #c1f2b0);
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 200%;
-  width: 200%;
-  z-index: -1;
-  opacity: 0.6;
+  background: black;
 }
 
 @media (max-width: 600px) {

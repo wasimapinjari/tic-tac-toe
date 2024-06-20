@@ -9,7 +9,6 @@ export default function Game() {
     <GameContextProvider>
       <ThemeProvider>
         <GrainyTexture />
-        <div className='texture-background' />
         <div className='game'>
           <Heading />
           <GameBox />
