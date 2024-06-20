@@ -91,13 +91,22 @@ export default function Board() {
     };
   }, [state.cells, state.winner]);
 
-  const sfxPlayer = useRef<HTMLAudioElement | null>(null);
-  const sfxDraw = useRef<HTMLAudioElement | null>(null);
   const sfxWin = useRef<HTMLAudioElement | null>(null);
-  const sfxReset = useRef<HTMLAudioElement | null>(null);
-  const sfxResetScore = useRef<HTMLAudioElement | null>(null);
+  const sfxDraw = useRef<HTMLAudioElement | null>(null);
   const sfxHover = useRef<HTMLAudioElement | null>(null);
+  const sfxReset = useRef<HTMLAudioElement | null>(null);
+  const sfxPlayer = useRef<HTMLAudioElement | null>(null);
+  const sfxResetScore = useRef<HTMLAudioElement | null>(null);
 
+  useEffect(() => {
+    if (!sfxWin.current) sfxWin.current = new Audio('./win.mp3');
+    if (!sfxDraw.current) sfxDraw.current = new Audio('./draw.mp3');
+    if (!sfxHover.current) sfxHover.current = new Audio('./hover.mp3');
+    if (!sfxReset.current) sfxReset.current = new Audio('./reset.mp3');
+    if (!sfxPlayer.current) sfxPlayer.current = new Audio('./move.mp3');
+    if (!sfxResetScore.current)
+      sfxResetScore.current = new Audio('./reset-score.mp3');
+  }, []);
   useEffect(() => {
     if (state.winner) sfxWin.current?.play();
     if (isArrayFilled(state.cells) && !state.winner) sfxDraw.current?.play();

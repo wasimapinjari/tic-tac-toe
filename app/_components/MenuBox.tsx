@@ -4,7 +4,7 @@ import { useGameDispatch } from '@/hooks/useGameDispatch';
 import { useGameState } from '@/hooks/useGameState';
 import SoundOff from './SoundOff';
 import SoundOn from './SoundOn';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 export default function MenuBox() {
   const {
@@ -19,6 +19,14 @@ export default function MenuBox() {
   const music = useRef<HTMLAudioElement | null>(null);
   const sfxHover = useRef<HTMLAudioElement | null>(null);
   const sfxSelected = useRef<HTMLAudioElement | null>(null);
+  useEffect(() => {
+    if (!sfxHover.current) sfxHover.current = new Audio('./hover.mp3');
+    if (!sfxSelected.current) sfxSelected.current = new Audio('./selected.mp3');
+    if (!music.current) {
+      music.current = new Audio('./music.mp3');
+      music.current.loop = true;
+    }
+  }, []);
   function handleSound() {
     setSound(!state.isSoundOn);
     if (!music.current) {
