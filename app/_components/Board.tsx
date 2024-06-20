@@ -244,9 +244,7 @@ export default function Board() {
           &nbsp;| &nbsp;O -&gt;{' '}
           <span className='score-value'>{state.score.O}</span>
         </p>
-        <button disabled onClick={() => setScore(initialScore)}>
-          Reset
-        </button>
+        <button onClick={() => setScore(initialScore)}>Reset</button>
       </div>
       <p
         style={{
