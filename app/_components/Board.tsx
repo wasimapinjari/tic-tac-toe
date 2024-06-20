@@ -7,7 +7,7 @@ import {
   isArrayFilled,
   randomArrayItem,
 } from '@/utils/helperFunctions';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import CreateGroup from './CreateGroup';
 import { useGameState } from '@/hooks/useGameState';
 import { useGameDispatch } from '@/hooks/useGameDispatch';
@@ -67,12 +67,77 @@ export default function Board() {
     };
   }, [state.winningCombination, state.theme]);
 
+  useEffect(() => {
+    const tiles: NodeListOf<HTMLDivElement> =
+      document.querySelectorAll('[data-tile]');
+    const gamebox: HTMLDivElement = document.querySelector(
+      '.game-box'
+    ) as HTMLDivElement;
+    if (isArrayFilled(state.cells) && !state.winner) {
+      tiles.forEach((tile) => {
+        tile.style.borderColor = 'rgba(220, 20, 60, 0.7)';
+        tile.style.boxShadow = '0 0 0.2rem 0.01rem rgba(220, 20, 60, 1)';
+      });
+      gamebox.style.borderColor = 'rgba(220, 20, 60, 0.7)';
+      gamebox.style.boxShadow = '0 0 0.2rem 0.01rem rgba(220, 20, 60, 1 )';
+    }
+    return () => {
+      tiles.forEach((tile) => {
+        tile.style.borderColor = 'var(--color)';
+        tile.style.boxShadow = 'var(--tile-shadow)';
+      });
+      gamebox.style.borderColor = 'var(--color)';
+      gamebox.style.boxShadow = 'var(--tile-shadow)';
+    };
+  }, [state.cells, state.winner]);
+
+  const sfxPlayer = useRef<HTMLAudioElement | null>(null);
+  const sfxDraw = useRef<HTMLAudioElement | null>(null);
+  const sfxWin = useRef<HTMLAudioElement | null>(null);
+  const sfxReset = useRef<HTMLAudioElement | null>(null);
+  const sfxResetScore = useRef<HTMLAudioElement | null>(null);
+  const sfxHover = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    if (state.winner) sfxWin.current?.play();
+    if (isArrayFilled(state.cells) && !state.winner) sfxDraw.current?.play();
+    if (
+      !isArrayEmpty(state.cells) &&
+      !isArrayFilled(state.cells) &&
+      !state.winner
+    )
+      sfxPlayer.current?.play();
+  }, [state.cells, state.winner]);
+
+  function handleHover() {
+    if (!sfxHover.current) sfxHover.current = new Audio('./hover.mp3');
+    sfxHover.current.currentTime = 0;
+    sfxHover.current.play();
+  }
+
+  function handleSound() {
+    if (!sfxWin.current) sfxWin.current = new Audio('./win.mp3');
+    if (!sfxPlayer.current) sfxPlayer.current = new Audio('./move.mp3');
+    if (!sfxDraw.current) sfxDraw.current = new Audio('./draw.mp3');
+  }
+
   function handleReset() {
+    if (!sfxReset.current) sfxReset.current = new Audio('./reset.mp3');
+    sfxReset.current.currentTime = 0;
+    sfxReset.current.play();
     setPlayer('X');
     setCells(initialCells);
     setWinner(null);
     setLoading(false);
     setWinningCombo([-1, -1, -1]);
+  }
+
+  function handleResetScore() {
+    if (!sfxResetScore.current)
+      sfxResetScore.current = new Audio('./reset-score.mp3');
+    sfxResetScore.current.currentTime = 0;
+    sfxResetScore.current.play();
+    setScore(initialScore);
   }
 
   function nextComputerMove(
@@ -179,6 +244,7 @@ export default function Board() {
   }
 
   function handleSetCells(content: Player, index: number) {
+    handleSound();
     const newCells: Cells = [...state.cells];
     newCells[index] = content;
     setCells(newCells);
@@ -214,9 +280,16 @@ export default function Board() {
   }
   const isCellsEmpty = isArrayEmpty(state.cells);
   const isCellsFilled = isArrayFilled(state.cells);
+
   return (
     <div className='group-game'>
-      <button onClick={handleReset}>Reset</button>
+      <button
+        className='reset'
+        onMouseEnter={handleHover}
+        onClick={handleReset}
+      >
+        Reset
+      </button>
       <div className='game-box'>
         {CreateGroup([0, 1, 2], handleSetCells)}
         {CreateGroup([3, 4, 5], handleSetCells)}
@@ -244,7 +317,13 @@ export default function Board() {
           &nbsp;| &nbsp;O -&gt;{' '}
           <span className='score-value'>{state.score.O}</span>
         </p>
-        <button onClick={() => setScore(initialScore)}>Reset</button>
+        <button
+          className='reset'
+          onMouseEnter={handleHover}
+          onClick={handleResetScore}
+        >
+          Reset
+        </button>
       </div>
       <p
         style={{

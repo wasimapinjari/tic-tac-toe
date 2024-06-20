@@ -14,6 +14,64 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const json = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'WebPage',
+        '@id': 'https://wasimapinjari.netlify.app/',
+        url: 'https://wasimapinjari.netlify.app/',
+        name: 'Wasim A Pinjari',
+        isPartOf: { '@id': 'https://wasimapinjari.netlify.app/#website' },
+        datePublished: '2023-04-23T00:00:00+00:00',
+        dateModified: '2023-04-23T00:00:00+00:00',
+        description:
+          'Ambitious coder, music lover, and nature enthusiast wanting to explore the world, meet new people, and live life to the fullest.',
+        breadcrumb: { '@id': 'https://wasimapinjari.netlify.app/#breadcrumb' },
+        inLanguage: 'en-US',
+        potentialAction: [
+          {
+            '@type': 'ReadAction',
+            target: ['https://wasimapinjari.netlify.app/'],
+          },
+        ],
+      },
+      {
+        '@type': 'BreadcrumbList',
+        '@id': 'https://wasimapinjari.netlify.app/#breadcrumb',
+        itemListElement: [{ '@type': 'ListItem', position: 1, name: 'Home' }],
+      },
+      {
+        '@type': 'WebSite',
+        '@id': 'https://wasimapinjari.netlify.app/#website',
+        url: 'https://wasimapinjari.netlify.app/',
+        name: 'Wasim A Pinjari',
+        description:
+          'Ambitious coder, music lover, and nature enthusiast wanting to explore the world, meet new people, and live life to the fullest.',
+
+        inLanguage: 'en-US',
+      },
+      {
+        '@type': 'Person',
+        name: 'Wasim A Pinjari',
+        url: 'https://wasimapinjari.netlify.app',
+        description: 'Wasim A Pinjari is a developer and loves designing.',
+        image: {
+          '@type': 'ImageObject',
+          url: 'https://wasimapinjari.netlify.app/assets/images/me.jpg',
+        },
+        sameAs: [
+          'https://facebook.com/wasimapinjari',
+          'https://instagram.com/wasimapinjari',
+          'https://twitter.com/wasimapinjari',
+          'https://wasimapinjari.netlify.app',
+          'https://linkedin.com/in/wasimapinjari',
+          'https://github.com/wasimapinjari',
+          'https://pinterest.com/wasimapinjari',
+        ],
+      },
+    ],
+  };
   return (
     <html lang='en'>
       <head>
@@ -95,6 +153,10 @@ export default function RootLayout({
         />
         <link rel='manifest' href='./site.webmanifest' />
         <link rel='canonical' href='https://wasimapinjari.netlify.app/' />
+        <script
+          type='application/ld+json'
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(json) }}
+        ></script>
       </head>
       <body className={inter.className}>{children}</body>
     </html>

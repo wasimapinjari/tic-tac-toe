@@ -37,6 +37,7 @@
   --tile-win: rgba(220, 20, 60, 0.2);
   --box-shadow: 0 0 1rem 0.2rem white;
   --tile-shadow: 0 0 0.3rem 0.01rem var(--color);
+  --reset-hover: #ddd;
 }
 
 [data-theme='light'] {
@@ -52,6 +53,7 @@
   --line-win: crimson;
   --box-shadow: 0 0 1rem 0.5rem white;
   --tile-shadow: 0 0 0.2rem 0.01rem var(--color);
+  --reset-hover: #555;
 }
 
 * {
@@ -350,6 +352,10 @@ button {
   isolation: isolate;
   pointer-events: none;
   background: black;
+}
+
+.reset:hover {
+  color: var(--reset-hover);
 }
 
 @media (max-width: 600px) {

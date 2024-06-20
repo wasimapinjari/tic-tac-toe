@@ -2,11 +2,9 @@
 
 import { useGameDispatch } from '@/hooks/useGameDispatch';
 import { useGameState } from '@/hooks/useGameState';
-import Image from 'next/image';
 import SoundOff from './SoundOff';
 import SoundOn from './SoundOn';
-import { useEffect, useRef, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { useRef } from 'react';
 
 export default function MenuBox() {
   const {
@@ -18,26 +16,45 @@ export default function MenuBox() {
     setSound,
   } = useGameDispatch();
   const state = useGameState();
+  const music = useRef<HTMLAudioElement | null>(null);
+  const sfxHover = useRef<HTMLAudioElement | null>(null);
+  const sfxSelected = useRef<HTMLAudioElement | null>(null);
   function handleSound() {
     setSound(!state.isSoundOn);
-    // const music = new Audio('./untitled.mp3');
-    // music.loop = true;
-    // if (state.isSoundOn) music.play();
-    // if (!state.isSoundOn) music.paused;
+    if (!music.current) {
+      music.current = new Audio('./music.mp3');
+      music.current.loop = true;
+    }
+    if (!state.isSoundOn) music.current.play();
+    if (state.isSoundOn) music.current.pause();
+  }
+  function handleHover() {
+    if (!sfxHover.current) sfxHover.current = new Audio('./hover.mp3');
+    sfxHover.current.currentTime = 0;
+    sfxHover.current.play();
+  }
+  function handleSelected() {
+    if (!sfxSelected.current) sfxSelected.current = new Audio('./selected.mp3');
+    sfxSelected.current.currentTime = 0;
+    sfxSelected.current.play();
   }
   return (
     <>
-      {/* {state.isSoundOn ? (
+      {state.isSoundOn ? (
         <SoundOn handleSound={handleSound} />
       ) : (
         <SoundOff handleSound={handleSound} />
-      )} */}
+      )}
       <div className='menu-box'>
         <div>
           <h2>Choose Player</h2>
           <div className='button-group'>
             <button
-              onClick={() => setChosenPlayer('X')}
+              onMouseEnter={handleHover}
+              onClick={() => {
+                handleSelected();
+                setChosenPlayer('X');
+              }}
               className={
                 'button left' + (state.chosenPlayer === 'X' ? ' active' : '')
               }
@@ -45,7 +62,11 @@ export default function MenuBox() {
               X
             </button>
             <button
-              onClick={() => setChosenPlayer('O')}
+              onMouseEnter={handleHover}
+              onClick={() => {
+                handleSelected();
+                setChosenPlayer('O');
+              }}
               className={
                 'button right' + (state.chosenPlayer === 'O' ? ' active' : '')
               }
@@ -59,13 +80,21 @@ export default function MenuBox() {
           <h2>Play With</h2>
           <div className='button-group'>
             <button
-              onClick={() => setComputer(false)}
+              onMouseEnter={handleHover}
+              onClick={() => {
+                handleSelected();
+                setComputer(false);
+              }}
               className={'button left' + (!state.isComputer ? ' active' : '')}
             >
               Friends
             </button>
             <button
-              onClick={() => setComputer(true)}
+              onMouseEnter={handleHover}
+              onClick={() => {
+                handleSelected();
+                setComputer(true);
+              }}
               className={'button right' + (state.isComputer ? ' active' : '')}
             >
               Computer
@@ -77,13 +106,21 @@ export default function MenuBox() {
           <h2>Difficulty</h2>
           <div className='button-group'>
             <button
-              onClick={() => setDifficulty(true)}
+              onMouseEnter={handleHover}
+              onClick={() => {
+                handleSelected();
+                setDifficulty(true);
+              }}
               className={'button left' + (state.isGameEasy ? ' active' : '')}
             >
               Easy
             </button>
             <button
-              onClick={() => setDifficulty(false)}
+              onMouseEnter={handleHover}
+              onClick={() => {
+                handleSelected();
+                setDifficulty(false);
+              }}
               className={'button right' + (!state.isGameEasy ? ' active' : '')}
             >
               Hard
@@ -95,13 +132,21 @@ export default function MenuBox() {
           <h2>Chaos Mode</h2>
           <div className='button-group'>
             <button
-              onClick={() => setChaos(true)}
+              onMouseEnter={handleHover}
+              onClick={() => {
+                handleSelected();
+                setChaos(true);
+              }}
               className={'button left' + (state.chaosMode ? ' active' : '')}
             >
               Enable
             </button>
             <button
-              onClick={() => setChaos(false)}
+              onMouseEnter={handleHover}
+              onClick={() => {
+                handleSelected();
+                setChaos(false);
+              }}
               className={'button right' + (!state.chaosMode ? ' active' : '')}
             >
               Disable
@@ -113,7 +158,11 @@ export default function MenuBox() {
           <h2>Dark Mode</h2>
           <div className='button-group'>
             <button
-              onClick={() => setTheme('dark')}
+              onMouseEnter={handleHover}
+              onClick={() => {
+                handleSelected();
+                setTheme('dark');
+              }}
               className={
                 'button left' + (state.theme === 'dark' ? ' active' : '')
               }
@@ -121,7 +170,11 @@ export default function MenuBox() {
               Enable
             </button>
             <button
-              onClick={() => setTheme('light')}
+              onMouseEnter={handleHover}
+              onClick={() => {
+                handleSelected();
+                setTheme('light');
+              }}
               className={
                 'button right' + (state.theme === 'light' ? ' active' : '')
               }
