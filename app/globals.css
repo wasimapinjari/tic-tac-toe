@@ -366,7 +366,7 @@ button {
     border-right: none;
     border-bottom: 0.1rem solid var(--color);
   }
-  .theme {
+  /* .theme {
     height: auto;
-  }
+  } */
 }
