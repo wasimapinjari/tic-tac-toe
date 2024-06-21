@@ -105,6 +105,14 @@ button {
   text-shadow: inherit;
 }
 
+.background {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background-color: var(--bg-color);
+  z-index: -1;
+}
+
 .theme {
   display: grid;
   place-items: center;
