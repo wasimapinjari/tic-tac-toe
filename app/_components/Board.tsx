@@ -191,7 +191,8 @@ export default function Board() {
         handleWinSound();
         const newScore = { ...state.score };
         const winningPlayer = newCells[a];
-        newScore[winningPlayer] = newScore[winningPlayer] + 1;
+        if (winningPlayer)
+          newScore[winningPlayer] = newScore[winningPlayer] + 1;
         setScore(newScore);
         return false;
       }
