@@ -10,9 +10,11 @@ export default function Game() {
       <ThemeProvider>
         <GrainyTexture />
         <div className='background'></div>
-        <div className='game'>
-          <Heading />
-          <GameBox />
+        <div className='container'>
+          <div className='game'>
+            <Heading />
+            <GameBox />
+          </div>
         </div>
       </ThemeProvider>
     </GameContextProvider>

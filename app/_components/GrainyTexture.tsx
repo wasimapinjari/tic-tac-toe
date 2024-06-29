@@ -4,12 +4,12 @@ export default function GrainyTexture() {
       <filter id='grainy'>
         <feTurbulence
           type='fractalNoise'
-          baseFrequency='1'
-          numOctaves='4'
+          baseFrequency={0.8}
           stitchTiles='stitch'
+          numOctaves={4}
         />
       </filter>
-      <rect width='100%' height='100%' filter='url(#grainy)' />
+      <rect height='100%' width='100%' filter='url(#grainy)' />
     </svg>
   );
 }

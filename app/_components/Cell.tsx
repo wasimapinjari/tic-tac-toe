@@ -2,7 +2,8 @@
 
 import { useGameDispatch } from '@/hooks/useGameDispatch';
 import { useGameState } from '@/hooks/useGameState';
-import { CellFunction } from '@/types/gameTypes';
+import { AudioRef, CellFunction } from '@/types/gameTypes';
+import { useRef } from 'react';
 
 export default function Cell({
   index,
@@ -11,14 +12,21 @@ export default function Cell({
 }: CellFunction) {
   const state = useGameState();
   const { setPlayer, setWinningCombo, setLoading } = useGameDispatch();
+  const sfxMove = useRef<AudioRef>(null);
+  function handleMoveSound() {
+    if (!sfxMove.current) sfxMove.current = new Audio('./move.mp3');
+    sfxMove.current.currentTime = 0;
+    sfxMove.current.play();
+  }
   function handleClickAfterWait() {
-    if (state.winner) return;
-    if (state.cells[index]) return;
+    // console.log(state);
+    handleMoveSound();
     if (!state.winner) setWinningCombo([-1, -1, -1]);
     if (cellContent || state.winner) return;
     if (state.currentPlayer === 'X') {
       setPlayer('O');
-      return setCellsContent('X');
+      setCellsContent('X');
+      return;
     }
     setPlayer('X');
     setCellsContent('O');
@@ -26,29 +34,20 @@ export default function Cell({
   function handleClick() {
     if (state.isLoading) return;
     setLoading(true);
-    if (!state.isComputer && !state.chaosMode) {
-      setTimeout(() => {
-        setLoading(false);
-      }, 100);
-    }
-    if (
-      (!state.isComputer && state.chaosMode) ||
-      (state.isComputer && !state.chaosMode)
-    ) {
-      setTimeout(() => {
-        setLoading(false);
-      }, 600);
-    }
-    if (state.isComputer && state.chaosMode) {
-      setTimeout(() => {
-        setLoading(false);
-      }, 900);
-    }
     handleClickAfterWait();
+    if (
+      (!state.isChaosMode && state.isComputer) ||
+      (state.isChaosMode && !state.isComputer)
+    )
+      setTimeout(() => setLoading(false), 600);
+    if (!state.isChaosMode && !state.isComputer)
+      setTimeout(() => setLoading(false), 100);
+    if (state.isChaosMode && state.isComputer)
+      setTimeout(() => setLoading(false), 900);
   }
   return (
     <button
-      // style={{ backgroundColor: color }}
+      role='gridcell'
       data-tile={index}
       disabled={state.isLoading}
       onClick={handleClick}

@@ -16,9 +16,10 @@ export type BooleanKeys = {
   [key in
     | 'isComputer'
     | 'isGameEasy'
-    | 'chaosMode'
+    | 'isChaosMode'
     | 'isLoading'
-    | 'isSoundOn']: boolean;
+    | 'isSoundOn'
+    | 'isInfinityMode']: boolean;
 };
 export type InitialState = {
   currentPlayer: Player;
@@ -28,6 +29,7 @@ export type InitialState = {
   theme: null | Theme;
   winningCombination: WinningCombination;
   score: Score;
+  infinityIndex: number;
 } & BooleanKeys;
 
 export type ReducerActions =
@@ -56,12 +58,17 @@ export type ReducerActions =
       payload: Score;
     }
   | {
+      type: 'setIndex';
+      payload: number;
+    }
+  | {
       type:
         | 'setComputer'
         | 'setChaos'
         | 'setDifficulty'
         | 'setLoading'
-        | 'setSound';
+        | 'setSound'
+        | 'setInfinity';
       payload: boolean;
     };
 
@@ -74,7 +81,8 @@ export type BooleanActions = {
     | 'setDifficulty'
     | 'setChaos'
     | 'setLoading'
-    | 'setSound']: (payload: boolean) => void;
+    | 'setSound'
+    | 'setInfinity']: (payload: boolean) => void;
 };
 export type DispatchActions = {
   dispatch: (value: ReducerActions) => void;
@@ -83,6 +91,7 @@ export type DispatchActions = {
   setWinner: (payload: Player | null) => void;
   setWinningCombo: (payload: WinningCombination) => void;
   setScore: (payload: Score) => void;
+  setIndex: (payload: number) => void;
 } & PlayerActions &
   BooleanActions;
 
@@ -93,5 +102,13 @@ export type CellFunction = {
 };
 
 export type HandleSound = {
-  handleSound: MouseEventHandler<SVGSVGElement>;
+  handleSound: () => Promise<void> | undefined;
+  handleHoverSound: MouseEventHandler<HTMLButtonElement>;
 };
+
+export type HandleTheme = {
+  handleTheme: (theme: Theme) => void;
+  handleHoverSound: MouseEventHandler<HTMLButtonElement>;
+};
+
+export type AudioRef = HTMLAudioElement | null;

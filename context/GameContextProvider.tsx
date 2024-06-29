@@ -1,6 +1,6 @@
 'use client';
 
-import { useReducer } from 'react';
+import { useCallback, useReducer } from 'react';
 import { GameContextDispatch, GameContextState } from './contexts';
 import {
   Cells,
@@ -27,12 +27,14 @@ const initialState: InitialState = {
   chosenPlayer: 'X',
   isComputer: true,
   isGameEasy: true,
-  chaosMode: false,
+  isChaosMode: false,
+  isInfinityMode: true,
   theme: null,
   winningCombination: [-1, -1, -1],
   score: initialScore,
   isLoading: false,
   isSoundOn: false,
+  infinityIndex: -1,
 };
 
 function reducer(state: InitialState, action: ReducerActions): InitialState {
@@ -77,7 +79,7 @@ function reducer(state: InitialState, action: ReducerActions): InitialState {
     case 'setChaos': {
       return {
         ...state,
-        chaosMode: payload,
+        isChaosMode: payload,
       };
     }
     case 'setDifficulty': {
@@ -110,6 +112,18 @@ function reducer(state: InitialState, action: ReducerActions): InitialState {
         isSoundOn: payload,
       };
     }
+    case 'setIndex': {
+      return {
+        ...state,
+        infinityIndex: payload,
+      };
+    }
+    case 'setInfinity': {
+      return {
+        ...state,
+        isInfinityMode: payload,
+      };
+    }
     default:
       throw new Error('Error, Invalid Action: ' + type);
   }
@@ -117,42 +131,48 @@ function reducer(state: InitialState, action: ReducerActions): InitialState {
 
 export default function GameContextProvider({ children }: Children) {
   const [state, dispatch] = useReducer(reducer, initialState);
-  function setChosenPlayer(payload: Player) {
+  const setChosenPlayer = useCallback((payload: Player) => {
     return dispatch({ type: 'setChosenPlayer', payload });
-  }
-  function setPlayer(payload: Player) {
+  }, []);
+  const setPlayer = useCallback((payload: Player) => {
     return dispatch({ type: 'setPlayer', payload });
-  }
-  function setCells(payload: Cells) {
+  }, []);
+  const setCells = useCallback((payload: Cells) => {
     return dispatch({ type: 'setCells', payload });
-  }
-  function setWinner(payload: Player | null) {
+  }, []);
+  const setWinner = useCallback((payload: Player | null) => {
     return dispatch({ type: 'setWinner', payload });
-  }
-  function setTheme(payload: Theme) {
+  }, []);
+  const setTheme = useCallback((payload: Theme) => {
     return dispatch({ type: 'setTheme', payload });
-  }
-  function setComputer(payload: boolean) {
+  }, []);
+  const setComputer = useCallback((payload: boolean) => {
     return dispatch({ type: 'setComputer', payload });
-  }
-  function setChaos(payload: boolean) {
+  }, []);
+  const setChaos = useCallback((payload: boolean) => {
     return dispatch({ type: 'setChaos', payload });
-  }
-  function setDifficulty(payload: boolean) {
+  }, []);
+  const setDifficulty = useCallback((payload: boolean) => {
     return dispatch({ type: 'setDifficulty', payload });
-  }
-  function setWinningCombo(payload: WinningCombination) {
+  }, []);
+  const setWinningCombo = useCallback((payload: WinningCombination) => {
     return dispatch({ type: 'setWinningCombo', payload });
-  }
-  function setScore(payload: Score) {
+  }, []);
+  const setScore = useCallback((payload: Score) => {
     return dispatch({ type: 'setScore', payload });
-  }
-  function setLoading(payload: boolean) {
+  }, []);
+  const setLoading = useCallback((payload: boolean) => {
     return dispatch({ type: 'setLoading', payload });
-  }
-  function setSound(payload: boolean) {
+  }, []);
+  const setSound = useCallback((payload: boolean) => {
     return dispatch({ type: 'setSound', payload });
-  }
+  }, []);
+  const setIndex = useCallback((payload: number) => {
+    return dispatch({ type: 'setIndex', payload });
+  }, []);
+  const setInfinity = useCallback((payload: boolean) => {
+    return dispatch({ type: 'setInfinity', payload });
+  }, []);
   return (
     <GameContextState.Provider value={state}>
       <GameContextDispatch.Provider
@@ -170,6 +190,8 @@ export default function GameContextProvider({ children }: Children) {
           setScore,
           setLoading,
           setSound,
+          setIndex,
+          setInfinity,
         }}
       >
         {children}

@@ -1,3 +1,12 @@
 export default function Heading() {
-  return <h1>Tic-Tac-Toe</h1>;
+  return (
+    <>
+      <header>
+        <h1>Tic-Tac-Toe</h1>
+        <span aria-hidden='true' className='heading-shadow'>
+          Tic-Tac-Toe
+        </span>
+      </header>
+    </>
+  );
 }

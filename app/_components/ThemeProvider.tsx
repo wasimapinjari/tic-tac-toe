@@ -7,48 +7,42 @@ import { useEffect } from 'react';
 
 export default function ThemeProvider({ children }: Children) {
   const state = useGameState();
-  const { dispatch } = useGameDispatch();
+  const { setTheme } = useGameDispatch();
   useEffect(() => {
-    let payload: Theme | null = null;
     const userDarkPreferance = window.matchMedia(
       '(prefers-color-scheme: dark)'
     ).matches;
-    payload = userDarkPreferance ? 'dark' : 'light';
+    const themeChoice = userDarkPreferance ? 'dark' : 'light';
+    let payload: Theme = themeChoice;
     if (!state.theme) {
       payload = (localStorage.getItem('theme') as Theme) || payload;
-      dispatch({ type: 'setTheme', payload });
+      setTheme(payload);
     }
-    const setTheme = state.theme || payload;
-    localStorage.setItem('theme', setTheme);
-    if (setTheme === 'light') {
+    const newTheme = state.theme || payload;
+    localStorage.setItem('theme', newTheme);
+    if (newTheme === 'light') {
       document.documentElement.style.setProperty('--scroll-thumb', '#bbb');
       document.documentElement.style.setProperty('--scroll-track', '#ddd');
       document.documentElement.style.setProperty(
         '--text-shadow',
         '0 0 0.1rem #2229'
       );
-      document
-        .querySelector('[name="theme-color"]')
-        ?.setAttribute('content', 'white');
     }
-    if (setTheme === 'dark') {
+    if (newTheme === 'dark') {
       document.documentElement.style.setProperty('--scroll-thumb', '#555');
       document.documentElement.style.setProperty('--scroll-track', '#333');
       document.documentElement.style.setProperty(
         '--text-shadow',
         '0 0 0.12rem white'
       );
-      document
-        .querySelector('[name="theme-color"]')
-        ?.setAttribute('content', '#222');
     }
-  }, [state.theme, dispatch]);
+    const color = state.theme === 'dark' ? 'lightgreen' : 'green';
+    document.documentElement.style.setProperty('--infinity-color', color);
+  }, [state.theme, setTheme]);
 
   return (
-    <>
-      <div className='theme' data-theme={state.theme}>
-        {children}
-      </div>
-    </>
+    <div className='theme' data-theme={state.theme}>
+      {children}
+    </div>
   );
 }
