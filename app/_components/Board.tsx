@@ -82,7 +82,7 @@ export default function Board() {
       eachLine.classList.remove('visible');
       tilesArray.forEach((tile) => tile.classList.remove('tile-win'));
     };
-  }, [winningCombination, theme, $$]);
+  }, [winningCombination, theme, $$, cells]);
 
   useEffect(() => {
     const groups = $$('.group');
