@@ -1,9 +1,13 @@
 import './globals.css';
 import { Inter } from 'next/font/google';
-import HeadData from './_components/HeadData';
-export { metadata } from './_components/HeadData';
+import LayoutHeadData from './_components/LayoutHeadData';
+export { metadata } from './_components/LayoutHeadData';
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({
+  subsets: ['latin'],
+  display: 'swap',
+  adjustFontFallback: false,
+});
 
 export default function RootLayout({
   children,
@@ -12,7 +16,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <HeadData />
+      <LayoutHeadData />
       <body className={inter.className}>{children}</body>
     </html>
   );

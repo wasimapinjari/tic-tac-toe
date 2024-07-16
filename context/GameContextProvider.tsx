@@ -1,17 +1,10 @@
 'use client';
 
-import { useCallback, useReducer } from 'react';
+import useActions from '@/hooks/useActions';
+import { Children, InitialState, ReducerActions } from '@/types/gameTypes';
+import { insertProperties } from '@/utils/helperFunctions';
+import { useReducer } from 'react';
 import { GameContextDispatch, GameContextState } from './contexts';
-import {
-  Cells,
-  Children,
-  InitialState,
-  Player,
-  ReducerActions,
-  Score,
-  Theme,
-  WinningCombination,
-} from '@/types/gameTypes';
 
 export const initialCells: null[] = Array(9).fill(null);
 
@@ -20,109 +13,84 @@ export const initialScore = {
   O: 0,
 };
 
-const initialState: InitialState = {
-  currentPlayer: 'X',
+export const initialState: InitialState = {
+  timeline: [initialCells],
+  current: 0,
   cells: initialCells,
+  currentPlayer: 'X',
   winner: null,
   chosenPlayer: 'X',
-  isComputer: true,
+  isComputer: false,
   isGameEasy: true,
   isChaosMode: false,
-  isInfinityMode: true,
+  isInfinityMode: false,
   theme: null,
   winningCombination: [-1, -1, -1],
   score: initialScore,
   isLoading: false,
   isSoundOn: false,
+  isOptionsHidden: false,
   infinityIndex: -1,
+  isUserInteracted: false,
 };
 
 function reducer(state: InitialState, action: ReducerActions): InitialState {
   const { type, payload } = action;
+  const newState = insertProperties(state, payload);
   switch (type) {
+    case 'setTimeline': {
+      return newState('timeline');
+    }
+    case 'setCurrent': {
+      return newState('current');
+    }
     case 'setChosenPlayer': {
-      return {
-        ...state,
-        chosenPlayer: payload,
-      };
+      return newState('chosenPlayer');
     }
     case 'setPlayer': {
-      return {
-        ...state,
-        currentPlayer: payload,
-      };
+      return newState('currentPlayer');
     }
     case 'setCells': {
-      return {
-        ...state,
-        cells: [...payload],
-      };
+      return newState('cells');
     }
     case 'setWinner': {
-      return {
-        ...state,
-        winner: payload,
-      };
+      return newState('winner');
     }
     case 'setTheme': {
-      return {
-        ...state,
-        theme: payload,
-      };
+      return newState('theme');
     }
     case 'setComputer': {
-      return {
-        ...state,
-        isComputer: payload,
-      };
+      return newState('isComputer');
     }
     case 'setChaos': {
-      return {
-        ...state,
-        isChaosMode: payload,
-      };
+      return newState('isChaosMode');
     }
     case 'setDifficulty': {
-      return {
-        ...state,
-        isGameEasy: payload,
-      };
+      return newState('isGameEasy');
     }
     case 'setWinningCombo': {
-      return {
-        ...state,
-        winningCombination: payload,
-      };
+      return newState('winningCombination');
     }
     case 'setScore': {
-      return {
-        ...state,
-        score: payload,
-      };
+      return newState('score');
     }
     case 'setLoading': {
-      return {
-        ...state,
-        isLoading: payload,
-      };
+      return newState('isLoading');
     }
     case 'setSound': {
-      return {
-        ...state,
-        isSoundOn: payload,
-      };
+      return newState('isSoundOn');
     }
     case 'setIndex': {
-      return {
-        ...state,
-        infinityIndex: payload,
-      };
+      return newState('infinityIndex');
     }
     case 'setInfinity': {
-      return {
-        ...state,
-        isInfinityMode: payload,
-      };
+      return newState('isInfinityMode');
+    }
+    case 'setHideOptions': {
+      return newState('isOptionsHidden');
+    }
+    case 'setInteraction': {
+      return newState('isUserInteracted');
     }
     default:
       throw new Error('Error, Invalid Action: ' + type);
@@ -131,53 +99,39 @@ function reducer(state: InitialState, action: ReducerActions): InitialState {
 
 export default function GameContextProvider({ children }: Children) {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const setChosenPlayer = useCallback((payload: Player) => {
-    return dispatch({ type: 'setChosenPlayer', payload });
-  }, []);
-  const setPlayer = useCallback((payload: Player) => {
-    return dispatch({ type: 'setPlayer', payload });
-  }, []);
-  const setCells = useCallback((payload: Cells) => {
-    return dispatch({ type: 'setCells', payload });
-  }, []);
-  const setWinner = useCallback((payload: Player | null) => {
-    return dispatch({ type: 'setWinner', payload });
-  }, []);
-  const setTheme = useCallback((payload: Theme) => {
-    return dispatch({ type: 'setTheme', payload });
-  }, []);
-  const setComputer = useCallback((payload: boolean) => {
-    return dispatch({ type: 'setComputer', payload });
-  }, []);
-  const setChaos = useCallback((payload: boolean) => {
-    return dispatch({ type: 'setChaos', payload });
-  }, []);
-  const setDifficulty = useCallback((payload: boolean) => {
-    return dispatch({ type: 'setDifficulty', payload });
-  }, []);
-  const setWinningCombo = useCallback((payload: WinningCombination) => {
-    return dispatch({ type: 'setWinningCombo', payload });
-  }, []);
-  const setScore = useCallback((payload: Score) => {
-    return dispatch({ type: 'setScore', payload });
-  }, []);
-  const setLoading = useCallback((payload: boolean) => {
-    return dispatch({ type: 'setLoading', payload });
-  }, []);
-  const setSound = useCallback((payload: boolean) => {
-    return dispatch({ type: 'setSound', payload });
-  }, []);
-  const setIndex = useCallback((payload: number) => {
-    return dispatch({ type: 'setIndex', payload });
-  }, []);
-  const setInfinity = useCallback((payload: boolean) => {
-    return dispatch({ type: 'setInfinity', payload });
-  }, []);
+
+  const action = useActions<
+    ReducerActions,
+    ReducerActions['type'],
+    ReducerActions['payload']
+  >(dispatch);
+
+  const setChosenPlayer = action('setChosenPlayer');
+  const setPlayer = action('setPlayer');
+  const setCells = action('setCells');
+  const setWinner = action('setWinner');
+  const setTheme = action('setTheme');
+  const setComputer = action('setComputer');
+  const setChaos = action('setChaos');
+  const setDifficulty = action('setDifficulty');
+  const setWinningCombo = action('setWinningCombo');
+  const setScore = action('setScore');
+  const setLoading = action('setLoading');
+  const setSound = action('setSound');
+  const setIndex = action('setIndex');
+  const setInfinity = action('setInfinity');
+  const setHideOptions = action('setHideOptions');
+  const setInteraction = action('setInteraction');
+  const setTimeline = action('setTimeline');
+  const setCurrent = action('setCurrent');
+
   return (
-    <GameContextState.Provider value={state}>
+    <GameContextState.Provider value={{ state, ...state }}>
       <GameContextDispatch.Provider
         value={{
           dispatch,
+          setTimeline,
+          setCurrent,
           setPlayer,
           setCells,
           setWinner,
@@ -192,6 +146,8 @@ export default function GameContextProvider({ children }: Children) {
           setSound,
           setIndex,
           setInfinity,
+          setHideOptions,
+          setInteraction,
         }}
       >
         {children}

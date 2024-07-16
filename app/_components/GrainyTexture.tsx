@@ -1,6 +1,6 @@
 export default function GrainyTexture() {
   return (
-    <svg className='grainy-texture'>
+    <svg className='grainy-texture' data-testid='grainy-texture'>
       <filter id='grainy'>
         <feTurbulence
           type='fractalNoise'

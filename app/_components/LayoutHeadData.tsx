@@ -83,7 +83,7 @@ const json = {
   ],
 };
 
-export default function HeadData() {
+export default function LayoutHeadData() {
   return (
     <head>
       <meta httpEquiv='X-UA-Compatible' content='IE=edge' />

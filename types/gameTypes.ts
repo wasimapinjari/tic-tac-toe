@@ -1,4 +1,12 @@
-import { MouseEventHandler, ReactNode } from 'react';
+import {
+  ComponentPropsWithoutRef,
+  Dispatch,
+  JSXElementConstructor,
+  MouseEventHandler,
+  ReactElement,
+  ReactNode,
+  SetStateAction,
+} from 'react';
 
 export type Children = {
   children: ReactNode;
@@ -12,6 +20,10 @@ export type Score = {
   X: number;
   O: number;
 };
+export type History = {
+  current: number;
+  timeline: Cells[];
+};
 export type BooleanKeys = {
   [key in
     | 'isComputer'
@@ -19,9 +31,14 @@ export type BooleanKeys = {
     | 'isChaosMode'
     | 'isLoading'
     | 'isSoundOn'
-    | 'isInfinityMode']: boolean;
+    | 'isOptionsHidden'
+    | 'isInfinityMode'
+    | 'isUserInteracted']: boolean;
 };
+
 export type InitialState = {
+  timeline: Cells[];
+  current: number;
   currentPlayer: Player;
   chosenPlayer: Player;
   cells: Cells;
@@ -32,7 +49,27 @@ export type InitialState = {
   infinityIndex: number;
 } & BooleanKeys;
 
+type BooleanActionNames =
+  | 'setComputer'
+  | 'setDifficulty'
+  | 'setChaos'
+  | 'setLoading'
+  | 'setSound'
+  | 'setInfinity'
+  | 'setHideOptions'
+  | 'setInteraction';
+
+type NumberActionNames = 'setCurrent' | 'setIndex';
+
 export type ReducerActions =
+  | {
+      type: 'setTimeline';
+      payload: Cells[];
+    }
+  | {
+      type: 'setCurrent';
+      payload: number;
+    }
   | {
       type: 'setChosenPlayer' | 'setPlayer';
       payload: Player;
@@ -58,42 +95,80 @@ export type ReducerActions =
       payload: Score;
     }
   | {
-      type: 'setIndex';
-      payload: number;
+      type: BooleanActionNames;
+      payload: boolean;
     }
   | {
-      type:
-        | 'setComputer'
-        | 'setChaos'
-        | 'setDifficulty'
-        | 'setLoading'
-        | 'setSound'
-        | 'setInfinity';
-      payload: boolean;
+      type: NumberActionNames;
+      payload: number;
     };
 
 export type PlayerActions = {
   [key in 'setPlayer' | 'setChosenPlayer']: (payload: Player) => void;
 };
 export type BooleanActions = {
-  [key in
-    | 'setComputer'
-    | 'setDifficulty'
-    | 'setChaos'
-    | 'setLoading'
-    | 'setSound'
-    | 'setInfinity']: (payload: boolean) => void;
+  [key in BooleanActionNames]: (payload: boolean) => void;
+};
+export type NumberActions = {
+  [key in NumberActionNames]: (payload: number) => void;
 };
 export type DispatchActions = {
-  dispatch: (value: ReducerActions) => void;
+  dispatch: (payload: ReducerActions) => void;
+  setTimeline: (payload: Cells[]) => void;
+  setCurrent: (payload: number) => void;
+  setIndex: (payload: number) => void;
   setTheme: (payload: Theme) => void;
   setCells: (payload: Cells) => void;
   setWinner: (payload: Player | null) => void;
   setWinningCombo: (payload: WinningCombination) => void;
   setScore: (payload: Score) => void;
-  setIndex: (payload: number) => void;
 } & PlayerActions &
-  BooleanActions;
+  BooleanActions &
+  NumberActions;
+
+export type OptionState = {
+  heading: string;
+  setHeading: Dispatch<SetStateAction<string>>;
+};
+
+export type OptionButton = {
+  onClick: MouseEventHandler<HTMLButtonElement>;
+  active: boolean;
+  ariaLabel: string;
+  key?: string | number;
+} & ButtonProps;
+
+export type ModalState = {
+  isOpen: boolean;
+  current: number;
+};
+
+export type ModalReducerActions =
+  | {
+      type: 'setOpen';
+      payload: boolean;
+    }
+  | {
+      type: 'setCurrent';
+      payload: number;
+    };
+
+export type ModalDispatchActions = {
+  setOpen: (payload: boolean) => void;
+  setCurrent: (payload: number) => void;
+};
+
+export type ModalIcon = { ariaLabel: string } & Children;
+
+export type ModalContent = { tabName: string } & Children;
+
+export type ModalContents = {
+  key: string;
+  tabName: string;
+  jsx: ReactElement<any, string | JSXElementConstructor<any>>;
+};
+
+export type Function = (...args: unknown[]) => unknown;
 
 export type CellFunction = {
   index: number;
@@ -101,14 +176,12 @@ export type CellFunction = {
   setCellsContent: (content: Player) => void;
 };
 
-export type HandleSound = {
-  handleSound: () => Promise<void> | undefined;
-  handleHoverSound: MouseEventHandler<HTMLButtonElement>;
-};
-
-export type HandleTheme = {
-  handleTheme: (theme: Theme) => void;
-  handleHoverSound: MouseEventHandler<HTMLButtonElement>;
-};
-
 export type AudioRef = HTMLAudioElement | null;
+
+export type PlayWithOptions = 'Friends' | 'Computer';
+
+export type ButtonProps = ComponentPropsWithoutRef<'button'>;
+
+export type KeyEvent = globalThis.KeyboardEvent;
+
+export type InteractionEvent = MouseEvent | KeyEvent | TouchEvent;
