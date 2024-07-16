@@ -20,7 +20,7 @@ export const initialState: InitialState = {
   currentPlayer: 'X',
   winner: null,
   chosenPlayer: 'X',
-  isComputer: false,
+  isComputer: true,
   isGameEasy: true,
   isChaosMode: false,
   isInfinityMode: false,
