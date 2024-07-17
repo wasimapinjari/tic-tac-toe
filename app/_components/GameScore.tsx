@@ -7,9 +7,9 @@ import Button from './Button';
 export default function GameScore() {
   const { score } = useGameState();
   const { setScore } = useGameDispatch();
-  const { handleSelectedSound, handleHoverSound } = useSound();
+  const { selectedSound, hoverSound } = useSound();
   function handleResetScore() {
-    handleSelectedSound();
+    selectedSound();
     setScore(initialScore);
   }
   return (
@@ -23,7 +23,7 @@ export default function GameScore() {
       <Button
         type='button'
         className='reset'
-        onMouseEnter={handleHoverSound}
+        onMouseEnter={hoverSound}
         onClick={handleResetScore}
         aria-label='Reset tic-tac-toe score'
         data-testid='reset-score-button'
