@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useGameState } from './useGameState';
 
 let selected: HTMLAudioElement,
@@ -5,22 +6,23 @@ let selected: HTMLAudioElement,
   draw: HTMLAudioElement,
   win: HTMLAudioElement;
 
-export default function useSound() {
+const usePlay = (sound: HTMLAudioElement) => {
   const { isUserInteracted } = useGameState();
+  return useCallback(() => {
+    if (!isUserInteracted) return;
+    if (sound) {
+      sound.currentTime = 0;
+      sound.play();
+    }
+  }, [isUserInteracted, sound]);
+};
+
+export default function useSound() {
   const loadAudio = () => {
     selected = new Audio('./selected.mp3');
     hover = new Audio('./hover.mp3');
     draw = new Audio('./draw.mp3');
     win = new Audio('./win.mp3');
-  };
-  const usePlay = (sound: HTMLAudioElement) => {
-    return () => {
-      if (!isUserInteracted) return;
-      if (sound) {
-        sound.currentTime = 0;
-        sound.play();
-      }
-    };
   };
   const hoverSound = usePlay(hover);
   const selectedSound = usePlay(selected);
