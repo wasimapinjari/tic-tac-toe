@@ -7,6 +7,7 @@ import { useEffect, useRef } from 'react';
 import GameBody from './GameBody';
 import GameHeading from './GameHeading';
 import IconContainer from './IconContainer';
+import useSound from '@/hooks/useSound';
 
 const validInteractionKeys = [
   'Enter',
@@ -35,7 +36,10 @@ for (let i = 97; i <= 122; i++) {
 export default function Container() {
   const { state } = useGameState();
   const { setInteraction } = useGameDispatch();
-
+  const { loadAudio } = useSound();
+  useEffect(() => {
+    loadAudio();
+  }, [loadAudio]);
   useEffect(() => {
     function handleInteraction(e: InteractionEvent) {
       let skip = true;
