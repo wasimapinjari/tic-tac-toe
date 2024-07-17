@@ -708,17 +708,29 @@ button {
   z-index: 2;
 }
 
-.overlay h2 {
+.overlay {
+  & h2 {
+    font-size: 1.2rem;
+    + ul {
+      margin-bottom: 2rem;
+    }
+  }
+  & h3 {
+    display: inline;
+  }
+}
+
+/* .overlay h2 {
   font-size: 1.2rem;
-}
+} */
 
-.overlay h2 + ul {
+/* .overlay h2 + ul {
   margin-bottom: 2rem;
-}
+} */
 
-.overlay h3 {
+/* .overlay h3 {
   display: inline;
-}
+} */
 
 .overlay h3 + ul {
   padding-left: 1rem;
@@ -778,6 +790,43 @@ button {
 .star {
   position: relative;
   top: 0.2rem;
+}
+
+.spinner {
+  height: 1.4rem;
+  width: 1.4rem;
+  animation: spin 0.5s infinite linear, icon-intro 0.1s ease-out;
+  background-color: var(--stroke);
+  border-radius: 50%;
+  position: relative;
+}
+
+.spinner::after {
+  content: '';
+  display: block;
+  color: var(--stroke);
+  height: 1.25rem;
+  width: 1.25rem;
+  border-radius: 50%;
+  background-color: var(--bg-color);
+  filter: blur(0.02rem);
+}
+
+.spinner::after {
+  content: '-';
+  display: block;
+  color: var(--stroke);
+  height: 1.25rem;
+  width: 1.25rem;
+  border-radius: 50%;
+  background-color: var(--bg-color);
+  filter: blur(0.02rem);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @media (max-width: 50em) {

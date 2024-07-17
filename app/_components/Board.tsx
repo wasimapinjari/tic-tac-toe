@@ -1,7 +1,8 @@
 import { useGameDispatch } from '@/hooks/useGameDispatch';
 import { useGameState } from '@/hooks/useGameState';
 import useHelper from '@/hooks/useHelper';
-import { AudioRef, Cells, Player, WinningCombination } from '@/types/gameTypes';
+import useSound from '@/hooks/useSound';
+import { Cells, Player, WinningCombination } from '@/types/gameTypes';
 import {
   arrayItemPlaceIndexes,
   isArrayFilled,
@@ -10,12 +11,13 @@ import {
   randomArrayIndex,
   randomArrayItem,
   removeArrayItem,
+  winningLogic,
 } from '@/utils/helperFunctions';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import CreateCellGroup from './CreateCellGroup';
 import InvisibleBoxes from './InvisibleBoxes';
 
-const winningLines: WinningCombination[] = [
+export const winningLines: WinningCombination[] = [
   [0, 1, 2],
   [3, 4, 5],
   [6, 7, 8],
@@ -28,7 +30,6 @@ const winningLines: WinningCombination[] = [
 
 export default function Board() {
   const {
-    state,
     timeline,
     current,
     currentPlayer,
@@ -53,8 +54,10 @@ export default function Board() {
     setIndex,
     setTimeline,
     setCurrent,
+    setCurrentWinner,
   } = useGameDispatch();
   const { $, $$ } = useHelper();
+  const { winSound, drawSound } = useSound();
   useEffect(() => {
     const lines = $$('[data-line]');
     const tiles = $$('[data-tile]');
@@ -82,7 +85,7 @@ export default function Board() {
       eachLine.classList.remove('visible');
       tilesArray.forEach((tile) => tile.classList.remove('tile-win'));
     };
-  }, [winningCombination, theme, $$, cells]);
+  }, [winningCombination, theme, $$]);
 
   useEffect(() => {
     const groups = $$('.group');
@@ -97,33 +100,14 @@ export default function Board() {
     };
   }, [cells, winner, $, $$]);
 
-  const sfxMove = useRef<AudioRef>(null);
-  const sfxWin = useRef<AudioRef>(null);
-
-  function handleDrawSound() {
-    if (!sfxMove.current) sfxMove.current = new Audio('./draw.mp3');
-    sfxMove.current.currentTime = 0;
-    sfxMove.current.play();
-  }
-  function handleWinSound() {
-    if (!sfxWin.current) sfxWin.current = new Audio('./win.mp3');
-    sfxWin.current.currentTime = 0;
-    sfxWin.current.play();
-  }
-
-  const winningLogic = ([x, y, z]: WinningCombination, cells: Cells) =>
-    cells[x] &&
-    cells[x] === cells[x] &&
-    cells[x] === cells[y] &&
-    cells[x] === cells[z];
-
   function winnerAlgorithm(newCells: Cells) {
     for (let i = 0; i < winningLines.length; i++) {
       const [a, b, c]: WinningCombination = winningLines[i];
       if (winningLogic([a, b, c], newCells)) {
         setWinner(newCells[a]);
         setWinningCombo([a, b, c]);
-        handleWinSound();
+        setCurrentWinner(newCells[a]);
+        winSound();
         const newScore = { ...score };
         const winningPlayer = newCells[a]!;
         newScore[winningPlayer] = newScore[winningPlayer] + 1;
@@ -173,7 +157,7 @@ export default function Board() {
     setCurrent(current + 1);
     const cellsReturned = winnerAlgorithm(newCells);
     if (cellsReturned) {
-      if (isArrayFilled(cellsReturned)) handleDrawSound();
+      if (isArrayFilled(cellsReturned)) drawSound();
       if (isComputer || isChaosMode) nextComputerMove(cellsReturned);
     }
   }
@@ -227,11 +211,25 @@ export default function Board() {
               }
             }
             setCells(newComputerCells);
+            setTimeline(
+              timeline.length === current
+                ? [...timeline, newComputerCells]
+                : [...timeline.slice(0, current), newComputerCells]
+            );
+            setCurrent(current + 1);
             if (isChaosMode) return;
           }, 300);
           if (isInfinityMode && isArrayFilledInfinity(newComputerCells)) return;
         }
-        setTimeout(() => setCells(newComputerCells), 600);
+        setTimeout(() => {
+          setCells(newComputerCells);
+          setTimeline(
+            timeline.length === current
+              ? [...timeline, newComputerCells]
+              : [...timeline.slice(0, current), newComputerCells]
+          );
+          setCurrent(current + 1);
+        }, 600);
       }
       if (isChaosMode) setPlayer(currentPlayingPlayer === 'X' ? 'O' : 'X');
       if (isChaosMode && isComputer) {

@@ -24,7 +24,20 @@ export type History = {
   current: number;
   timeline: Cells[];
 };
-export type BooleanKeys = {
+
+export type InitialState = {
+  timeline: Cells[];
+  current: number;
+  cells: Cells;
+  theme: null | Theme;
+  winningCombination: WinningCombination;
+  score: Score;
+  infinityIndex: number;
+} & {
+  [key in 'currentPlayer' | 'chosenPlayer']: Player;
+} & {
+  [key in 'winner' | 'currentWinner']: Player | null;
+} & {
   [key in
     | 'isComputer'
     | 'isGameEasy'
@@ -35,19 +48,6 @@ export type BooleanKeys = {
     | 'isInfinityMode'
     | 'isUserInteracted']: boolean;
 };
-
-export type InitialState = {
-  timeline: Cells[];
-  current: number;
-  currentPlayer: Player;
-  chosenPlayer: Player;
-  cells: Cells;
-  winner: null | Player;
-  theme: null | Theme;
-  winningCombination: WinningCombination;
-  score: Score;
-  infinityIndex: number;
-} & BooleanKeys;
 
 type BooleanActionNames =
   | 'setComputer'
@@ -75,7 +75,7 @@ export type ReducerActions =
       payload: Player;
     }
   | {
-      type: 'setWinner';
+      type: 'setWinner' | 'setCurrentWinner';
       payload: Player | null;
     }
   | {
@@ -120,6 +120,7 @@ export type DispatchActions = {
   setTheme: (payload: Theme) => void;
   setCells: (payload: Cells) => void;
   setWinner: (payload: Player | null) => void;
+  setCurrentWinner: (payload: Player | null) => void;
   setWinningCombo: (payload: WinningCombination) => void;
   setScore: (payload: Score) => void;
 } & PlayerActions &

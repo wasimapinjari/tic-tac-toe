@@ -14,11 +14,12 @@ export const initialScore = {
 };
 
 export const initialState: InitialState = {
-  timeline: [initialCells],
+  timeline: [],
   current: 0,
   cells: initialCells,
   currentPlayer: 'X',
   winner: null,
+  currentWinner: null,
   chosenPlayer: 'X',
   isComputer: true,
   isGameEasy: true,
@@ -55,6 +56,9 @@ function reducer(state: InitialState, action: ReducerActions): InitialState {
     }
     case 'setWinner': {
       return newState('winner');
+    }
+    case 'setCurrentWinner': {
+      return newState('currentWinner');
     }
     case 'setTheme': {
       return newState('theme');
@@ -110,6 +114,7 @@ export default function GameContextProvider({ children }: Children) {
   const setPlayer = action('setPlayer');
   const setCells = action('setCells');
   const setWinner = action('setWinner');
+  const setCurrentWinner = action('setCurrentWinner');
   const setTheme = action('setTheme');
   const setComputer = action('setComputer');
   const setChaos = action('setChaos');
@@ -135,6 +140,7 @@ export default function GameContextProvider({ children }: Children) {
           setPlayer,
           setCells,
           setWinner,
+          setCurrentWinner,
           setComputer,
           setTheme,
           setChosenPlayer,

@@ -3,7 +3,7 @@ import { useGameDispatch } from '@/hooks/useGameDispatch';
 import { useGameState } from '@/hooks/useGameState';
 import useHelper from '@/hooks/useHelper';
 import useSound from '@/hooks/useSound';
-import { Player, PlayWithOptions } from '@/types/gameTypes';
+import { Cells, Player, PlayWithOptions } from '@/types/gameTypes';
 import {
   arrayItemPlaceIndexes,
   infinityTransform,
@@ -17,6 +17,8 @@ import Option from './Option';
 export default function GameOptions() {
   const {
     state,
+    timeline,
+    current,
     cells,
     winner,
     chosenPlayer,
@@ -39,10 +41,12 @@ export default function GameOptions() {
     setPlayer,
     setInfinity,
     setCells,
+    setTimeline,
     setIndex,
+    setCurrent,
   } = useGameDispatch();
   const { $ } = useHelper();
-  const { handleSelectedSound } = useSound();
+  const { selectedSound } = useSound();
   const handleClick = useClick();
 
   function resetInfinity() {
@@ -58,7 +62,7 @@ export default function GameOptions() {
       return function <U>(clickFunction2: (payload: U) => void) {
         return function (payload2: U) {
           return function () {
-            handleSelectedSound();
+            selectedSound();
             clickFunction(payload);
             clickFunction2(payload2);
           };
@@ -92,7 +96,7 @@ export default function GameOptions() {
       return function <U>(clickFunction2: (payload: U) => void) {
         return function (payload2: U) {
           return function (e: SyntheticEvent<HTMLButtonElement>) {
-            handleSelectedSound();
+            selectedSound();
             clickFunction(payload);
             clickFunction2(payload2);
             const selectButtonText = (e.target as HTMLButtonElement)
@@ -108,7 +112,7 @@ export default function GameOptions() {
   function handlePlayWith<T>(clickFunction: (payload: T) => void) {
     return function (payload: T) {
       return function (e: SyntheticEvent<HTMLButtonElement>) {
-        handleSelectedSound();
+        selectedSound();
         clickFunction(payload);
         const playWith = {
           Friends: false,
@@ -131,6 +135,8 @@ export default function GameOptions() {
       $('.theme').style.setProperty('--infinity-color', color);
       infinityTileSpan.classList.add('infinity-span');
       setCells(array);
+      setTimeline([array]);
+      setCurrent(0);
       setIndex(infinityIndex);
     }
   }

@@ -1,25 +1,26 @@
-import { AudioRef } from '@/types/gameTypes';
-import { useCallback, useRef } from 'react';
+import { useCallback } from 'react';
 import { useGameState } from './useGameState';
 
-export default function useSound() {
+const hover = new Audio('./hover.mp3');
+const selected = new Audio('./selected.mp3');
+const draw = new Audio('./draw.mp3');
+const win = new Audio('./win.mp3');
+
+function usePlay(sound: HTMLAudioElement) {
   const { isUserInteracted } = useGameState();
-  const sfxHover = useRef<AudioRef>(null);
-  const sfxSelected = useRef<AudioRef>(null);
-
-  const handleHoverSound = useCallback(() => {
+  return useCallback(() => {
     if (!isUserInteracted) return;
-    if (!sfxHover.current) sfxHover.current = new Audio('./hover.mp3');
-    sfxHover.current.currentTime = 0;
-    sfxHover.current.play();
-  }, [isUserInteracted]);
+    if (sound) {
+      sound.currentTime = 0;
+      sound.play();
+    }
+  }, [isUserInteracted, sound]);
+}
 
-  const handleSelectedSound = useCallback(() => {
-    if (!isUserInteracted) return;
-    if (!sfxSelected.current) sfxSelected.current = new Audio('./selected.mp3');
-    sfxSelected.current.currentTime = 0;
-    sfxSelected.current.play();
-  }, [isUserInteracted]);
-
-  return { handleHoverSound, handleSelectedSound };
+export default function useSound() {
+  const hoverSound = usePlay(hover);
+  const selectedSound = usePlay(selected);
+  const drawSound = usePlay(draw);
+  const winSound = usePlay(win);
+  return { hoverSound, selectedSound, drawSound, winSound };
 }

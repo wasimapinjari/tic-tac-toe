@@ -1,4 +1,4 @@
-import { Cells, Player } from '@/types/gameTypes';
+import { Cells, Player, WinningCombination } from '@/types/gameTypes';
 
 export const randomArrayIndex = <T>(array: T[]) =>
   Math.floor(Math.random() * array.length);
@@ -130,3 +130,9 @@ export const insertProperties = <T, U>(object: T, value: U) => {
     [key]: value,
   });
 };
+
+export const winningLogic = ([x, y, z]: WinningCombination, cells: Cells) =>
+  cells[x] &&
+  cells[x] === cells[x] &&
+  cells[x] === cells[y] &&
+  cells[x] === cells[z];
