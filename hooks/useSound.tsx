@@ -1,4 +1,3 @@
-import { useCallback, useEffect } from 'react';
 import { useGameState } from './useGameState';
 
 let selected: HTMLAudioElement,
@@ -27,5 +26,5 @@ export default function useSound() {
   const selectedSound = usePlay(selected);
   const drawSound = usePlay(draw);
   const winSound = usePlay(win);
-  return { hoverSound, selectedSound, drawSound, winSound, loadAudio };
+  return { loadAudio, hoverSound, selectedSound, drawSound, winSound };
 }
