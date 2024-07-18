@@ -49,6 +49,8 @@ export type InitialState = {
     | 'isUserInteracted']: boolean;
 };
 
+export type State = (InitialState & { state: InitialState }) | null;
+
 type BooleanActionNames =
   | 'setComputer'
   | 'setDifficulty'
@@ -127,7 +129,7 @@ export type DispatchActions = {
   BooleanActions &
   NumberActions;
 
-export type OptionState = {
+export type Option = {
   heading: string;
   setHeading: Dispatch<SetStateAction<string>>;
 };
@@ -139,7 +141,9 @@ export type OptionButton = {
   key?: string | number;
 } & ButtonProps;
 
-export type ModalState = {
+export type Modal = ModalDispatchActions & { state: ModalInitialState };
+
+export type ModalInitialState = {
   isOpen: boolean;
   current: number;
 };

@@ -7,21 +7,15 @@ import {
   ModalContent,
   ModalContents,
   ModalIcon,
+  ModalInitialState,
   ModalReducerActions,
-  ModalState,
 } from '@/types/gameTypes';
 import { insertProperties } from '@/utils/helperFunctions';
-import {
-  Children,
-  isValidElement,
-  JSXElementConstructor,
-  ReactElement,
-  useReducer,
-} from 'react';
+import { Children, isValidElement, useReducer } from 'react';
 import Button from './Button';
 import Option from './Option';
 
-const initialState: ModalState = { isOpen: false, current: 0 };
+const initialState: ModalInitialState = { isOpen: false, current: 0 };
 
 const reducer = (state: typeof initialState, action: ModalReducerActions) => {
   const { type, payload } = action;
