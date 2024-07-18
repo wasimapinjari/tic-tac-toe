@@ -48,7 +48,7 @@ const gameplay = (
         <ul>
           <li>The game is played on a 3x3 grid</li>
           <li>
-            Two players take turns to mark a cell in the grid with their symbol
+            Two players take turns to draw mark in a grid cell with their symbol
             (X or O)
           </li>
           <li>
@@ -76,6 +76,31 @@ const gameplay = (
           <li>
             Once the game is over, you can start a new game by resetting the
             grid
+          </li>
+        </ul>
+      </li>
+      <li>
+        <h3>Game Modes</h3>
+        <ul>
+          <li>
+            Normal Mode - This is the default mode and can be turn back on by
+            disabling both infinity & chaos mode
+          </li>
+          <li>
+            Infinity mode - In this mode you are only allowed to draw 3 marks of
+            your own in the grid cells. In total there can be only three X and
+            three O in total. If no one wins one of the your mark will be
+            randomly selected and you have to place it somewhere else in the
+            empty grid cells until either player wins by getting 3 in a row
+            horizontally, vertically or diagonally.
+          </li>
+          <li>
+            Chaos mode - This mode is similar to normal mode but the difference
+            is after drawing your mark in a grid cell, one of the empty grid
+            cells will be randomly selected to draw your second mark randomly.
+            Instead of making one move you will make 2 moves. The fun part is
+            you will never know where the random move is going to be in the grid
+            cells.
           </li>
         </ul>
       </li>
