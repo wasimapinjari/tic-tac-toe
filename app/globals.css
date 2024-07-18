@@ -687,6 +687,7 @@ button {
   flex-direction: column;
   padding: 0 3rem 3rem;
   overflow-y: auto;
+  overflow-x: hidden;
   line-height: 1.7;
   opacity: 97%;
 }

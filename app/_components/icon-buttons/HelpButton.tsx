@@ -48,8 +48,8 @@ const gameplay = (
         <ul>
           <li>The game is played on a 3x3 grid</li>
           <li>
-            Two players take turns to draw mark in a grid cell with their symbol
-            (X or O)
+            Two players take turns to place mark in a grid cell with their
+            symbol (X or O)
           </li>
           <li>
             Player 1 typically uses &apos;X&apos;, and Player 2 uses
