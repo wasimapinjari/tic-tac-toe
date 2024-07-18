@@ -8,8 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "test": "vitest",
-    "test:ui": "vitest --ui"
+    "test:ui": "vitest --ui --api 9527"
   },
+  "browserslist": "> 0.5%, not dead, last 10 versions, Firefox ESR",
   "dependencies": {
     "@reduxjs/toolkit": "^2.2.5",
     "next": "14.2.3",
@@ -37,23 +38,5 @@
     "typescript": "^5",
     "vite-tsconfig-paths": "^4.3.2",
     "vitest": "^2.0.1"
-  },
-  "browserslist": "> 0.5%, not dead, last 10 versions, Firefox ESR",
-  "postcss": {
-    "plugins": [
-      "postcss-flexbugs-fixes",
-      [
-        "postcss-preset-env",
-        {
-          "autoprefixer": {
-            "flexbox": "no-2009"
-          },
-          "stage": 3,
-          "features": {
-            "custom-properties": false
-          }
-        }
-      ]
-    ]
   }
 }

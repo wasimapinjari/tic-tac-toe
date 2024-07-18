@@ -20,6 +20,7 @@ export default function SoundButton() {
       );
       music.loop = true;
     }
+    setIsLoading(false);
     setSound(!isSoundOn);
     if (!isSoundOn) return music.play();
     music.pause();

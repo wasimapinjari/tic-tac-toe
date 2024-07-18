@@ -28,6 +28,7 @@ export default function GameOptions() {
     isInfinityMode,
     theme,
     isLoading,
+    currentPlayer,
     infinityIndex,
     isOptionsHidden,
   } = useGameState();
@@ -130,7 +131,8 @@ export default function GameOptions() {
     handleClick2(setInfinity)(true)(setChaos)(false)();
     if (!winner && !isArrayFilled(cells) && isArrayInfinity(cells)) {
       let color = theme === 'dark' ? 'lightgreen' : 'green';
-      const { array, infinityIndex } = infinityTransform(cells, chosenPlayer);
+      const player = isComputer ? chosenPlayer : currentPlayer;
+      const { array, infinityIndex } = infinityTransform(cells, player);
       const infinityTileSpan = $(`[data-tile="${infinityIndex}"] span`);
       $('.theme').style.setProperty('--infinity-color', color);
       infinityTileSpan.classList.add('infinity-span');

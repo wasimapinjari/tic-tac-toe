@@ -38,9 +38,6 @@ export default function LeftButton() {
     setTimeout(() => setLoading(false), 100);
   }
   function handleClick() {
-    console.log(state);
-    if (timeline.length === 0) currentWinner = null;
-    currentWinner = currentWinner || winner;
     const newCells = current < 2 ? initialCells : timeline[current - 2];
     throttle();
     selectedSound();

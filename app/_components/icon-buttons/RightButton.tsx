@@ -2,7 +2,12 @@ import { useGameDispatch } from '@/hooks/useGameDispatch';
 import { useGameState } from '@/hooks/useGameState';
 import useSound from '@/hooks/useSound';
 import { WinningCombination } from '@/types/gameTypes';
-import { winningLogic } from '@/utils/helperFunctions';
+import {
+  arrayItemPlaceIndexes,
+  isArrayFilledInfinityStrict,
+  randomArrayItem,
+  winningLogic,
+} from '@/utils/helperFunctions';
 import { winningLines } from '../Board';
 import Button from '../Button';
 import Right from '../icons/Right';
@@ -17,6 +22,10 @@ export default function RightButton() {
     isLoading,
     winner,
     currentWinner,
+    currentPlayer,
+    state,
+    isInfinityMode,
+    cells,
   } = useGameState();
   const {
     setCells,
@@ -35,9 +44,18 @@ export default function RightButton() {
     setLoading(true);
     setTimeout(() => setLoading(false), 100);
   }
+  let infinityIndexCurrent: number;
   function handleClick() {
-    if (current === timeline.length) return;
     throttle();
+    // if (current === timeline.length - 1) {
+    //   const playerPositions = arrayItemPlaceIndexes(
+    //     timeline[current],
+    //     currentPlayer
+    //   );
+    //   infinityIndexCurrent = randomArrayItem(playerPositions);
+    //   const infinityTileSpan = $(`[data-tile="${infinityIndexCurrent}"] span`);
+    //   infinityTileSpan.classList.add('infinity-span');
+    // }
     const newCells = !current
       ? timeline[current]
       : current === timeline.length
