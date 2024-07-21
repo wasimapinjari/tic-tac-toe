@@ -14,7 +14,7 @@ export const initialScore = {
 };
 
 export const initialState: InitialState = {
-  timeline: [],
+  timeline: [initialCells],
   current: 0,
   cells: initialCells,
   currentPlayer: 'X',

@@ -27,7 +27,7 @@ export default function BoardOptions() {
     if (isLoading) return;
     selectedSound();
     setCells(initialCells);
-    setTimeline([]);
+    setTimeline([initialCells]);
     setCurrent(0);
     setPlayer(chosenPlayer);
     setWinner(null);

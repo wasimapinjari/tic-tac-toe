@@ -108,6 +108,24 @@ const gameplay = (
   </>
 );
 
+const about = (
+  <>
+    <h2>About</h2>
+    <ul>
+      <li>
+        Creator - This game is created with love by&nbsp;
+        <a href='https://linkedin.com/in/wasimapinjari'>Wasim A Pinjari</a>
+      </li>
+      <li>
+        Source code -&nbsp;
+        <a href='https://github.com/wasimapinjari/tic-tac-toe'>
+          github.com/wasimapinjari/tic-tac-toe
+        </a>
+      </li>
+    </ul>
+  </>
+);
+
 export default function HelpButton() {
   return (
     <Modal>
@@ -122,6 +140,7 @@ export default function HelpButton() {
         </Modal.CloseIcon>
         <Modal.Content tabName='Shortcuts'>{shortcuts}</Modal.Content>
         <Modal.Content tabName='Gameplay'>{gameplay}</Modal.Content>
+        <Modal.Content tabName='About'>{about}</Modal.Content>
       </Modal.Overlay>
     </Modal>
   );

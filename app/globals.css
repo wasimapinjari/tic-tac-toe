@@ -146,6 +146,15 @@ svg {
   --infinity-color: green;
 }
 
+a {
+  color: var(--color);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--hover-sound);
+}
+
 *,
 ::before,
 ::after {
@@ -175,6 +184,8 @@ body,
   display: grid;
   place-items: center;
   text-shadow: var(--text-shadow);
+  font-size: 1.1rem;
+  letter-spacing: 0.02rem;
 }
 
 .theme::-webkit-scrollbar,
