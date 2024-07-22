@@ -2,7 +2,25 @@ import Close from '../icons/Close';
 import Help from '../icons/Help';
 import Modal from '../Modal';
 
-const gt = <span className='gt'>-&gt;</span>;
+const gt = (
+  <span
+    className='gt'
+    style={{
+      position: 'relative',
+    }}
+  >
+    &nbsp;—
+    <span
+      style={{
+        position: 'absolute',
+        right: '0.1rem',
+      }}
+    >
+      &gt;
+    </span>
+    &nbsp;
+  </span>
+);
 
 const shortcuts = (
   <>
@@ -11,10 +29,10 @@ const shortcuts = (
       <li>1 / 2 / 3 / 4 / 5 / 6 / 7 / 8 / 9 {gt} Draw (X or O) on board</li>
       <li>Enter / Space / Escape {gt} Reset Board</li>
       <li>Backspace / ~ / 0 {gt} Reset Score</li>
-      <li>Right Click / Z / - {gt} Undo Board</li>
-      <li>Middle Mouse Button / X / + {gt} Redo Board</li>
+      <li>Right Click / - / Z {gt} Undo Board</li>
+      <li>Middle Mouse Button / + / X {gt} Redo Board</li>
       <li>
-        CapsLock / T / <span className='star'>*</span> {gt} Toggle Theme
+        CapsLock / <span className='star'>*</span> / T {gt} Toggle Theme
       </li>
       <li>
         O / <span className='period'>.</span> {gt} Toggle Game Options

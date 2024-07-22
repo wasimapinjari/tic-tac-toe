@@ -6,8 +6,7 @@ import { Cells, Player, WinningCombination } from '@/types/gameTypes';
 import {
   arrayItemPlaceIndexes,
   isArrayFilled,
-  isArrayFilledInfinity,
-  isArrayFilledInfinityStrict,
+  isArrayInfinity,
   randomArrayIndex,
   randomArrayItem,
   removeArrayItem,
@@ -30,6 +29,7 @@ export const winningLines: WinningCombination[] = [
 
 export default function Board() {
   const {
+    state,
     timeline,
     current,
     currentPlayer,
@@ -122,16 +122,12 @@ export default function Board() {
     let newCells: Cells = [...cells];
     newCells[index] = content;
     if (isInfinityMode && infinityIndex !== -1) {
-      if (isArrayFilledInfinity(newCells))
+      if (isArrayInfinity(newCells))
         newCells = removeArrayItem(newCells, infinityIndex);
       const infinityTileSpan = $(`[data-tile="${infinityIndex}"] span`);
       infinityTileSpan.classList.remove('infinity-span');
     }
-    if (
-      isInfinityMode &&
-      !isComputer &&
-      isArrayFilledInfinityStrict(newCells)
-    ) {
+    if (isInfinityMode && !isComputer && isArrayInfinity(newCells)) {
       const nextPlayer = content === 'X' ? 'O' : 'X';
       const playerPositions = arrayItemPlaceIndexes(newCells, nextPlayer);
       const infinityIndexCurrent = randomArrayItem(playerPositions);
@@ -180,7 +176,7 @@ export default function Board() {
     function performMove(index: number, nextCells: Cells) {
       let newComputerCells = [...nextCells];
       newComputerCells[index] = computer;
-      if (isInfinityMode && isArrayFilledInfinity(newComputerCells)) {
+      if (isInfinityMode && isArrayInfinity(newComputerCells)) {
         newComputerCells = removeArrayItem(
           newComputerCells,
           computerInfinityIndex
@@ -190,7 +186,7 @@ export default function Board() {
       if (!winner) {
         if (player === null) {
           let playerInfinityIndex: number;
-          if (isInfinityMode && isArrayFilledInfinity(newComputerCells)) {
+          if (isInfinityMode && isArrayInfinity(newComputerCells)) {
             const playerPositions = arrayItemPlaceIndexes(
               newComputerCells,
               currentPlayingPlayer
@@ -199,7 +195,7 @@ export default function Board() {
             setIndex(playerInfinityIndex);
           }
           setTimeout(() => {
-            if (isInfinityMode && isArrayFilledInfinity(newComputerCells)) {
+            if (isInfinityMode && isArrayInfinity(newComputerCells)) {
               const cellsReturned = winnerAlgorithm(newComputerCells);
               if (cellsReturned) {
                 let color = theme === 'dark' ? 'lightgreen' : 'green';
@@ -219,7 +215,7 @@ export default function Board() {
             setCurrent(current + 1);
             if (isChaosMode) return;
           }, 300);
-          if (isInfinityMode && isArrayFilledInfinity(newComputerCells)) return;
+          if (isInfinityMode && isArrayInfinity(newComputerCells)) return;
         }
         setTimeout(() => {
           setCells(newComputerCells);

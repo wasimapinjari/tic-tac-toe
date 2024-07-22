@@ -18,28 +18,6 @@ export const isArrayFilled = (array: Cells) =>
     return false;
   }, true);
 
-export const isArrayFilledInfinity = (array: Cells) => {
-  let X = 0,
-    O = 0;
-  return array.reduce((acc, item) => {
-    if (item === 'X') X++;
-    if (item === 'O') O++;
-    if (X === 3 || O === 3 || acc) return true;
-    return false;
-  }, false);
-};
-
-export const isArrayFilledInfinityStrict = (array: Cells) => {
-  let X = 0,
-    O = 0;
-  return array.reduce((acc, item) => {
-    if (item === 'X') X++;
-    if (item === 'O') O++;
-    if ((X === 3 && O === 3) || acc) return true;
-    return false;
-  }, false);
-};
-
 export const isArrayInfinity = (array: Cells) => {
   let X = 0,
     O = 0;
@@ -106,6 +84,32 @@ export const infinityTransform = (array: Cells, chosenPlayer: Player) => {
   }
   const infinityIndex = randomArrayItem(positions[chosenPlayer]);
   return { array, infinityIndex };
+};
+
+export const balanceArray = (array: Cells) => {
+  const positions = {
+    X: arrayItemPlaceIndexes(array, 'X'),
+    O: arrayItemPlaceIndexes(array, 'O'),
+  };
+  const { X, O } = positions;
+  if (X.length === O.length) return array;
+  let newArray = array;
+  if (X.length > O.length) {
+    const count = X.length - O.length;
+    for (let i = 0; i < count; i++) {
+      const index = randomArrayItem(X);
+      X.splice(X.indexOf(index), 1);
+      newArray = removeArrayItem(newArray, index);
+    }
+    return newArray;
+  }
+  const count = O.length - X.length;
+  for (let i = 0; i < count; i++) {
+    const index = randomArrayItem(O);
+    O.splice(O.indexOf(index), 1);
+    newArray = removeArrayItem(newArray, index);
+  }
+  return newArray;
 };
 
 export const addDashes = (text: string) => text.split(' ').join('-');

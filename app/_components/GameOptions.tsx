@@ -6,6 +6,7 @@ import useSound from '@/hooks/useSound';
 import { Cells, Player, PlayWithOptions } from '@/types/gameTypes';
 import {
   arrayItemPlaceIndexes,
+  balanceArray,
   infinityTransform,
   isArrayFilled,
   isArrayInfinity,
@@ -16,9 +17,6 @@ import Option from './Option';
 
 export default function GameOptions() {
   const {
-    state,
-    timeline,
-    current,
     cells,
     winner,
     chosenPlayer,
@@ -27,18 +25,15 @@ export default function GameOptions() {
     isChaosMode,
     isInfinityMode,
     theme,
-    isLoading,
     currentPlayer,
     infinityIndex,
     isOptionsHidden,
   } = useGameState();
   const {
-    setTheme,
     setDifficulty,
     setComputer,
     setChosenPlayer,
     setChaos,
-    setSound,
     setPlayer,
     setInfinity,
     setCells,
@@ -50,26 +45,18 @@ export default function GameOptions() {
   const { selectedSound } = useSound();
   const handleClick = useClick();
 
+  function balanceCells() {
+    const newCells: Cells = balanceArray(cells);
+    setCells(newCells);
+    return newCells;
+  }
+
   function resetInfinity() {
     if (infinityIndex !== -1) {
       const infinityTileSpan = $(`[data-tile="${infinityIndex}"] span`);
       infinityTileSpan.classList.remove('infinity-span');
     }
     setIndex(-1);
-  }
-
-  function handleClick2<T>(clickFunction: (payload: T) => void) {
-    return function (payload: T) {
-      return function <U>(clickFunction2: (payload: U) => void) {
-        return function (payload2: U) {
-          return function () {
-            selectedSound();
-            clickFunction(payload);
-            clickFunction2(payload2);
-          };
-        };
-      };
-    };
   }
 
   function resetInfinityMode(newChosenPlayer: Player = chosenPlayer) {
@@ -115,6 +102,9 @@ export default function GameOptions() {
       return function (e: SyntheticEvent<HTMLButtonElement>) {
         selectedSound();
         clickFunction(payload);
+        balanceCells();
+        setChosenPlayer(chosenPlayer);
+        setPlayer(chosenPlayer);
         const playWith = {
           Friends: false,
           Computer: true,
@@ -128,11 +118,14 @@ export default function GameOptions() {
   }
 
   function handleInfinity() {
-    handleClick2(setInfinity)(true)(setChaos)(false)();
-    if (!winner && !isArrayFilled(cells) && isArrayInfinity(cells)) {
+    selectedSound();
+    setInfinity(true);
+    setChaos(false);
+    const newCells = balanceCells();
+    if (!winner && !isArrayFilled(newCells) && isArrayInfinity(newCells)) {
       let color = theme === 'dark' ? 'lightgreen' : 'green';
       const player = isComputer ? chosenPlayer : currentPlayer;
-      const { array, infinityIndex } = infinityTransform(cells, player);
+      const { array, infinityIndex } = infinityTransform(newCells, player);
       const infinityTileSpan = $(`[data-tile="${infinityIndex}"] span`);
       $('.theme').style.setProperty('--infinity-color', color);
       infinityTileSpan.classList.add('infinity-span');
@@ -144,7 +137,10 @@ export default function GameOptions() {
   }
 
   function handleChaos() {
-    handleClick2(setChaos)(true)(setInfinity)(false)();
+    selectedSound();
+    balanceCells();
+    setChaos(true);
+    setInfinity(false);
     resetInfinity();
   }
   return (
@@ -227,7 +223,11 @@ export default function GameOptions() {
             Enable
           </Option.Button>
           <Option.Button
-            onClick={handleClick(setInfinity)(false, resetInfinity)}
+            onClick={handleClick(setInfinity)(
+              false,
+              resetInfinity,
+              balanceCells
+            )}
             active={!isInfinityMode}
             ariaLabel='Disable tic-tac-toe Infinity mode'
             data-testid='disable-infinity-button'
@@ -249,7 +249,7 @@ export default function GameOptions() {
             Enable
           </Option.Button>
           <Option.Button
-            onClick={handleClick(setChaos)(false, resetInfinity)}
+            onClick={handleClick(setChaos)(false, resetInfinity, balanceCells)}
             active={!isChaosMode}
             ariaLabel='Disable tic-tac-toe Chaos mode'
             data-testid='disable-chaos-button'
