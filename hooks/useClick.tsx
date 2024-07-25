@@ -1,6 +1,4 @@
-import { Function } from '@/types/gameTypes';
 import useSound from './useSound';
-import { useGameState } from './useGameState';
 
 export default function useClick() {
   const { selectedSound } = useSound();
