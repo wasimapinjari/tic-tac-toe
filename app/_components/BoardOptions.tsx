@@ -6,8 +6,6 @@ import useSound from '@/hooks/useSound';
 import Button from './Button';
 import LeftButton from './icon-buttons/LeftButton';
 import RightButton from './icon-buttons/RightButton';
-import { useRef } from 'react';
-import { Player } from '@/types/gameTypes';
 
 export default function BoardOptions() {
   const { chosenPlayer, isLoading, infinityIndex } = useGameState();

@@ -3,6 +3,7 @@ import { useGameDispatch } from '@/hooks/useGameDispatch';
 import { useGameState } from '@/hooks/useGameState';
 import useSound from '@/hooks/useSound';
 import Button from './Button';
+import { gt } from './icon-buttons/HelpButton';
 
 export default function GameScore() {
   const { score } = useGameState();
@@ -15,9 +16,11 @@ export default function GameScore() {
   return (
     <div className='score'>
       <p aria-live='polite' data-testid='score'>
-        <span id='x-score-label'>X</span> -&gt;&nbsp;
+        <span id='x-score-label'>X</span>
+        {gt}
         <span aria-labelledby='x-score-label'>{score.X}</span>
-        &nbsp; | &nbsp;<span id='o-score-label'>O</span> -&gt;&nbsp;
+        &nbsp; | &nbsp;<span id='o-score-label'>O</span>
+        {gt}
         <span aria-labelledby='o-score-label'>{score.O}</span>
       </p>
       <Button

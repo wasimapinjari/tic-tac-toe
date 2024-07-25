@@ -20,7 +20,6 @@ export default function ThemeProvider({ children }: Children) {
     const newTheme = theme || payload;
     localStorage.setItem('theme', newTheme);
   }, [theme, setTheme]);
-
   return (
     <div className='theme' data-theme={theme} data-testid='theme'>
       {children}

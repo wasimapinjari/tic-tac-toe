@@ -1,0 +1,15 @@
+@font-face {
+  font-family: 'DancingScript';
+  src: url('/fonts/DancingScript-SemiBold.woff2') format('woff2'),
+    url('/fonts/DancingScript-SemiBold.woff') format('woff'),
+    url('/fonts/DancingScript-SemiBold.ttf') format('truetype');
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Acme';
+  src: url('/fonts/Acme-Regular.woff2') format('woff2'),
+    url('/fonts/Acme-Regular.woff') format('woff'),
+    url('/fonts/Acme-Regular.ttf') format('truetype');
+  font-display: swap;
+}

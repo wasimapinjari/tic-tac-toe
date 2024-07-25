@@ -2,11 +2,13 @@ import Close from '../icons/Close';
 import Help from '../icons/Help';
 import Modal from '../Modal';
 
-const gt = (
+export const gt = (
   <span
     className='gt'
     style={{
       position: 'relative',
+      bottom: '0.05rem',
+      margin: '0 0.1rem',
     }}
   >
     &nbsp;—

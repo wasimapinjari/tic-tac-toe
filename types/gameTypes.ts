@@ -173,7 +173,7 @@ export type ModalContents = {
   jsx: ReactElement<any, string | JSXElementConstructor<any>>;
 };
 
-export type Function = (...args: unknown[]) => unknown;
+// export type Function = (...args: unknown[]) => unknown;
 
 export type CellFunction = {
   index: number;

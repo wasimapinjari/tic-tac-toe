@@ -13,7 +13,7 @@ export default function Cell({
   const { setPlayer, setWinningCombo, setLoading } = useGameDispatch();
   const sfxMove = useRef<AudioRef>(null);
   function handleMoveSound() {
-    if (!sfxMove.current) sfxMove.current = new Audio('./move.mp3');
+    if (!sfxMove.current) sfxMove.current = new Audio('./sounds/move.mp3');
     sfxMove.current.currentTime = 0;
     sfxMove.current.play();
   }

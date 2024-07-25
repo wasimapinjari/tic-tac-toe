@@ -19,10 +19,10 @@ const usePlay = (sound: HTMLAudioElement) => {
 
 export default function useSound() {
   const loadAudio = () => {
-    selected = new Audio('./selected.mp3');
-    hover = new Audio('./hover.mp3');
-    draw = new Audio('./draw.mp3');
-    win = new Audio('./win.mp3');
+    selected = new Audio('./sounds/selected.mp3');
+    hover = new Audio('./sounds/hover.mp3');
+    draw = new Audio('./sounds/draw.mp3');
+    win = new Audio('./sounds/win.mp3');
   };
   const hoverSound = usePlay(hover);
   const selectedSound = usePlay(selected);

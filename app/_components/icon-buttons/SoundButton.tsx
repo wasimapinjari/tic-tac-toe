@@ -14,7 +14,7 @@ export default function SoundButton() {
   function handleSound() {
     if (!music) {
       setIsLoading(true);
-      music = new Audio('./music.mp3');
+      music = new Audio('./sounds/music.mp3');
       music.addEventListener('canplaythrough', () =>
         setTimeout(() => setIsLoading(false))
       );
